@@ -24,6 +24,16 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Page load animation */
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+body {
+  animation: pageIn 0.8s ease-out;
+}
+
 body {
   background: var(--paper);
   color: var(--black);
@@ -48,7 +58,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.04;
+  opacity: 0; /* removed grain — cleaner */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
@@ -68,7 +78,7 @@ body::before {
 }
 
 .announce span {
-  color: var(--accent-light);
+  color: #c9a96e;
 }
 
 /* === NAV === */
@@ -80,7 +90,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(245, 242, 236, 0.94);
+  background: rgba(245, 242, 236, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid transparent;
@@ -234,7 +244,7 @@ body::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(26,24,21,0.75) 0%, rgba(26,24,21,0.5) 40%, rgba(26,24,21,0.3) 100%);
+  background: linear-gradient(to right, rgba(14,12,10,0.88) 0%, rgba(26,24,21,0.65) 35%, rgba(26,24,21,0.25) 65%, rgba(26,24,21,0.1) 100%);
 }
 
 /* SVG dragon-room inspired chair as hero centerpiece */
@@ -267,7 +277,7 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-light);
+  color: #c9a96e;
   margin-bottom: 32px;
   font-weight: 500;
   opacity: 0;
@@ -283,9 +293,9 @@ body::before {
 
 .hero-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(48px, 6.8vw, 96px);
+  font-size: clamp(52px, 7.5vw, 110px);
   line-height: 0.98;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 32px;
   opacity: 0;
@@ -295,13 +305,13 @@ body::before {
 .hero-title em {
   font-style: italic;
   font-weight: 300;
-  color: var(--accent-light);
+  color: #c9a96e;
 }
 
 .hero-sub {
   font-size: 16px;
   line-height: 1.65;
-  color: rgba(245, 242, 236, 0.78);
+  color: rgba(245, 242, 236, 0.85);
   max-width: 480px;
   margin-bottom: 40px;
   opacity: 0;
@@ -338,13 +348,16 @@ body::before {
 }
 
 .btn-light {
-  border-color: var(--paper);
+  border-color: rgba(245,242,236,0.6);
   color: var(--paper);
+  background: rgba(245,242,236,0.08);
+  backdrop-filter: blur(4px);
 }
 
 .btn-light:hover {
   background: var(--paper);
   color: var(--black);
+  border-color: var(--paper);
 }
 
 .btn-text {
@@ -416,7 +429,7 @@ body::before {
 
 .manifesto-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(28px, 3vw, 40px);
+  font-size: clamp(26px, 2.8vw, 36px);
   line-height: 1.35;
   font-weight: 300;
   letter-spacing: -0.01em;
@@ -448,7 +461,7 @@ body::before {
 
 .collection-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 5vw, 68px);
+  font-size: clamp(44px, 5.5vw, 76px);
   line-height: 1;
   font-weight: 300;
   letter-spacing: -0.02em;
@@ -470,11 +483,11 @@ body::before {
 
 .products {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 56px 32px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px 40px;
 }
 
-.product {
+.product { cursor: crosshair; /* designer cursor */ 
   position: relative;
   cursor: pointer;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -569,7 +582,7 @@ body::before {
   line-height: 1.4;
 }
 
-.product-price {
+.product-price { font-size: 17px !important; color: var(--muted) !important; /* cleaned */
   font-family: 'Cormorant Garamond', serif;
   font-size: 20px;
   font-weight: 400;
@@ -625,7 +638,7 @@ body::before {
   font-size: clamp(64px, 7vw, 96px);
   font-weight: 300;
   line-height: 1;
-  color: var(--accent-light);
+  color: #c9a96e;
   margin-bottom: 16px;
   letter-spacing: -0.02em;
 }
@@ -634,11 +647,11 @@ body::before {
   font-style: italic;
 }
 
-.lead-stat-label {
+.lead-stat-label { font-size: 9px !important; letter-spacing: 0.2em !important; opacity: 0.7; /* cleaned */
   font-size: 11px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--accent-light);
+  color: #c9a96e;
   margin-bottom: 12px;
   font-weight: 500;
 }
@@ -864,7 +877,7 @@ body::before {
 }
 
 .contract-content .section-label {
-  color: var(--accent-light);
+  color: #c9a96e;
   margin-bottom: 32px;
 }
 
@@ -883,7 +896,7 @@ body::before {
 
 .contract-heading em {
   font-style: italic;
-  color: var(--accent-light);
+  color: #c9a96e;
 }
 
 .contract-body {
@@ -895,9 +908,9 @@ body::before {
 
 .contract-clients {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin: 40px 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 32px 0;
   padding: 32px 0;
   border-top: 1px solid rgba(245, 242, 236, 0.15);
   border-bottom: 1px solid rgba(245, 242, 236, 0.15);
@@ -1035,8 +1048,8 @@ body::before {
 
 .journal-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px;
 }
 
 .article {
@@ -1165,14 +1178,14 @@ body::before {
 /* === FOOTER === */
 .footer {
   background: var(--black-deep);
-  color: rgba(245, 242, 236, 0.6);
+  color: rgba(245, 242, 236, 0.85);
   padding: 60px 80px 28px;
   font-size: 13px;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 50px;
   margin-bottom: 40px;
   padding-bottom: 40px;
@@ -1233,7 +1246,7 @@ body::before {
 .footer-list li { margin-bottom: 12px; }
 
 .footer-list a {
-  color: rgba(245, 242, 236, 0.6);
+  color: rgba(245, 242, 236, 0.85);
   text-decoration: none;
   transition: color 0.3s;
   font-size: 13px;
@@ -1281,7 +1294,7 @@ body::before {
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(26, 24, 21, 0.15);
   transition: all 0.4s cubic-bezier(0.7, 0, 0.3, 1);
-  border: 1px solid var(--accent);
+  border: none;
   text-decoration: none;
 }
 
@@ -1389,7 +1402,7 @@ body::before {
 <nav class="nav" id="nav">
   <a href="#" class="logo">
     <span class="logo-main">In Situ <em>Editions</em></span>
-    <span class="logo-tag">Hong Kong · Paris</span>
+    
   </a>
   <ul class="nav-links">
     <li><a href="#collection">Collection</a></li>
@@ -1504,7 +1517,7 @@ body::before {
     </p>
     <div class="hero-actions">
       <a href="#collection" class="btn btn-light">Voir la collection</a>
-      <a href="#origins" class="btn-text">Notre histoire</a>
+      
     </div>
   </div>
 </section>
@@ -1550,7 +1563,7 @@ body::before {
       <h2 class="collection-title">Quinze pièces.<br><em>Six salons.</em></h2>
     </div>
     <p class="collection-intro">
-      Produites en séries courtes par nos partenaires du Pearl River Delta. Six semaines.
+      
     </p>
   </div>
 
@@ -1646,7 +1659,7 @@ body::before {
     </article>
   </div>
 
-  <div class="collection-cta">
+  <div class="collection-cta" style="display:none;">
     <a href="#" class="btn btn-dark">Voir les 15 pièces</a>
   </div>
 </section>
