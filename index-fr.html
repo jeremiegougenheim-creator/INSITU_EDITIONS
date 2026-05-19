@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Situ Editions — Le mobilier, dans son contexte.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1a1815;
+  --black-deep: #0e0c0a;
+  --paper: #f5f2ec;
+  --paper-warm: #ebe6dc;
+  --accent: #8b6f47;
+  --accent-deep: #5d4828;
+  --accent-light: #a8896a;
+  --line: #c9c1b3;
+  --muted: #6b6357;
+  --success: #5d7a4f;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--black);
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 15px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+}
+
+/* === GRAIN === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* === ANNOUNCEMENT BAR === */
+.announce { display: none; /* cleaned */
+  background: var(--black);
+  color: var(--paper);
+  padding: 9px 48px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 400;
+  position: relative;
+  z-index: 101;
+}
+
+.announce span {
+  color: var(--accent-light);
+}
+
+/* === NAV === */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(245, 242, 236, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.4s, padding 0.4s;
+}
+
+.nav.scrolled {
+  padding: 16px 48px;
+  border-bottom-color: var(--line);
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--black);
+  line-height: 1;
+}
+
+.logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: inline;
+  white-space: nowrap;
+}
+
+.logo-main em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.logo-tag {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+  display: block;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.lang-switch { display: none; /* cleaned */
+  display: flex;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.lang-switch button {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  transition: color 0.3s;
+}
+
+.lang-switch button.active {
+  color: var(--black);
+  border-bottom: 1px solid var(--accent);
+}
+
+.lang-switch button:hover { color: var(--accent); }
+
+.nav-cart {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cart-count {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--paper);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+/* === HERO === */
+.hero {
+  height: calc(100vh - 90px);
+  min-height: 700px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 80px;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: url('img/paris-living.jpg') center/cover no-repeat;
+  z-index: 0;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,24,21,0.75) 0%, rgba(26,24,21,0.5) 40%, rgba(26,24,21,0.3) 100%);
+}
+
+/* SVG dragon-room inspired chair as hero centerpiece */
+.hero-illustration { display: none; /* hidden — real photo hero */
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48%;
+  max-width: 680px;
+  height: auto;
+  opacity: 0;
+  animation: fadeUp 1.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(-40%); }
+  to { opacity: 1; transform: translateY(-50%); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: var(--paper);
+  max-width: 640px;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 32px;
+  font-weight: 500;
+  opacity: 0;
+  animation: slideUp 1s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow::before {
+  display: none;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6.8vw, 96px);
+  line-height: 0.98;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: slideUp 1.2s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent-light);
+}
+
+.hero-sub {
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(245, 242, 236, 0.78);
+  max-width: 480px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: slideUp 1s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-actions {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: slideUp 1s 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.btn {
+  display: inline-block;
+  padding: 16px 36px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 500;
+  transition: all 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.btn-light {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+.btn-light:hover {
+  background: var(--paper);
+  color: var(--black);
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-text::after {
+  content: '→';
+  margin-left: 8px;
+  display: inline-block;
+  transition: transform 0.4s;
+}
+
+.btn-text:hover::after { transform: translateX(6px); }
+
+.hero-meta { display: none; /* cleaned */
+  position: absolute;
+  top: 50%;
+  left: 80px;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: left center;
+  color: rgba(245, 242, 236, 0.45);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+/* === MANIFESTO === */
+.manifesto {
+  padding: 120px 80px;
+  background: var(--paper);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label::before {
+  content: '';
+  width: 0px;
+  height: 0;
+  background: transparent;
+  display: none;
+}
+
+.manifesto-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.35;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.manifesto-text em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+
+.manifesto-text .accent {
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* === COLLECTION === */
+.collection {
+  padding: 100px 80px;
+  background: var(--paper);
+}
+
+.collection-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  margin-bottom: 56px;
+  gap: 40px;
+}
+
+.collection-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-top: 20px;
+}
+
+.collection-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.collection-intro {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 400px;
+  justify-self: end;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 56px 32px;
+}
+
+.product {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product:hover { transform: translateY(-6px); }
+
+.product-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: var(--paper);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image svg,
+.product-image .img-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product:hover .product-image svg, .product:hover .product-image .img-cover { transform: scale(1.06); }
+
+.product-badge { display: none; /* cleaned */
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--paper);
+  padding: 6px 12px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  z-index: 2;
+  border: none;
+}
+
+.product-lead { display: none; /* cleaned */
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(26, 24, 21, 0.85);
+  color: var(--paper);
+  padding: 5px 11px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 4px;
+  gap: 16px;
+}
+
+.product-name { font-size: 28px !important; /* cleaned */
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+.product-origin { text-transform: none; letter-spacing: 0.04em !important; font-size: 10px !important; font-weight: 400 !important; /* cleaned */
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.product-meta { font-size: 12px !important; color: var(--line) !important; /* cleaned */
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.product-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--black);
+  white-space: nowrap;
+  margin-top: 14px;
+}
+
+.product-price small {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-family: 'Inter Tight', sans-serif;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.collection-cta {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.btn-dark { border-width: 0.5px; /* cleaned */
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.btn-dark:hover {
+  background: var(--black);
+  color: var(--paper);
+}
+
+/* === LEAD TIME BANNER === */
+.lead-banner {
+  background: var(--black);
+  color: var(--paper);
+  padding: 64px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+
+.lead-stat {
+  text-align: left;
+}
+
+.lead-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(64px, 7vw, 96px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.lead-stat-num em {
+  font-style: italic;
+}
+
+.lead-stat-label {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.lead-stat-body { display: none; /* cleaned */
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(245, 242, 236, 0.75);
+  max-width: 280px;
+}
+
+/* === ORIGINS === */
+.origins {
+  background: var(--paper);
+  padding: 120px 80px;
+  position: relative;
+}
+
+.origins-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 100px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.origins-visual {
+  position: relative;
+  aspect-ratio: 3/4;
+  border: none;
+  overflow: hidden;
+}
+
+.origins-visual svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.origins-content .section-label { margin-bottom: 32px; }
+
+.origins-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 1.08;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+.origins-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.origins-body {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.origins-body em {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--accent);
+  font-style: italic;
+}
+
+.origins-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  color: var(--black);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--accent);
+  transition: gap 0.4s;
+}
+
+.origins-link:hover { gap: 20px; }
+
+/* === PROJECTS === */
+.projects {
+  padding: 100px 0 100px 80px;
+  background: var(--paper-warm);
+}
+
+.projects-header {
+  padding-right: 80px;
+  margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+  align-items: end;
+}
+
+.projects-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin: 20px 0 16px 0;
+}
+
+.projects-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.projects-sub {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 380px;
+  justify-self: end;
+}
+
+.projects-row {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  padding-bottom: 32px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.projects-row::-webkit-scrollbar {
+  height: 2px;
+}
+.projects-row::-webkit-scrollbar-track { background: var(--line); }
+.projects-row::-webkit-scrollbar-thumb { background: var(--accent); }
+
+.project-card {
+  flex: 0 0 440px;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.project-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: var(--paper);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  border: none;
+}
+
+.project-image svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-image svg { transform: scale(1.05); }
+
+.project-loc {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.project-name { font-size: 22px !important; /* cleaned */
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.project-desc { display: none; /* cleaned */
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.project-pieces { font-size: 10px !important; letter-spacing: 0.1em !important; opacity: 0.6; /* cleaned */
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* === CONTRACT (B2B) === */
+.contract {
+  background: var(--black);
+  color: var(--paper);
+  padding: 100px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contract::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.contract-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+}
+
+.contract-content .section-label {
+  color: var(--accent-light);
+  margin-bottom: 32px;
+}
+
+.contract-content .section-label::before {
+  background: var(--accent-light);
+}
+
+.contract-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4.5vw, 60px);
+  line-height: 1.08;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+.contract-heading em {
+  font-style: italic;
+  color: var(--accent-light);
+}
+
+.contract-body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(245, 242, 236, 0.75);
+  margin-bottom: 24px;
+}
+
+.contract-clients {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 40px 0;
+  padding: 32px 0;
+  border-top: 1px solid rgba(245, 242, 236, 0.15);
+  border-bottom: 1px solid rgba(245, 242, 236, 0.15);
+}
+
+.client-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: rgba(245, 242, 236, 0.85);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.contract-cta-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.contract-cta-group .btn-text {
+  color: var(--paper);
+}
+
+.contract-visual {
+  aspect-ratio: 5/6;
+  border: 1px solid rgba(245, 242, 236, 0.15);
+  overflow: hidden;
+  position: relative;
+}
+
+.contract-visual svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* === TRADE PROGRAM === */
+.trade {
+  padding: 100px 80px;
+  background: var(--paper);
+  border-top: none;
+}
+
+.trade-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.trade-content .section-label { margin-bottom: 32px; }
+
+.trade-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.1;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+
+.trade-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.trade-body {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.trade-benefits {
+  list-style: none;
+  margin: 32px 0;
+}
+
+.trade-benefits li {
+  font-size: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--black);
+}
+
+.trade-benefits li:first-child { border-top: 1px solid var(--line); }
+
+.trade-benefits li span:last-child {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--accent-deep);
+  font-style: italic;
+}
+
+.trade-visual {
+  aspect-ratio: 5/6;
+  border: none;
+  overflow: hidden;
+}
+
+/* === JOURNAL === */
+.journal {
+  padding: 100px 80px;
+  background: var(--paper);
+  border-top: none;
+}
+
+.journal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 48px;
+  gap: 40px;
+}
+
+.journal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 60px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-top: 20px;
+}
+
+.journal-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.article {
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.article:hover { transform: translateY(-4px); }
+
+.article-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--paper);
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  border: none;
+}
+
+.article-image svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.article-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.article-meta span:nth-child(2) { color: var(--muted); }
+
+.article-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.article-excerpt {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* === NEWSLETTER === */
+.newsletter {
+  background: var(--black-deep);
+  color: var(--paper);
+  padding: 80px 80px;
+  text-align: center;
+}
+
+.newsletter-inner {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.newsletter-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+.newsletter-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.newsletter-body {
+  color: rgba(245, 242, 236, 0.65);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(245, 242, 236, 0.3);
+  padding-bottom: 12px;
+  transition: border-color 0.4s;
+}
+
+.newsletter-form:focus-within { border-bottom-color: var(--accent); }
+
+.newsletter-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+  color: var(--paper);
+  font-size: 15px;
+  font-family: 'Inter Tight', sans-serif;
+  outline: none;
+}
+
+.newsletter-form input::placeholder { color: rgba(245, 242, 236, 0.4); }
+
+.newsletter-form button {
+  background: transparent;
+  border: none;
+  color: var(--paper);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 12px 0 12px 24px;
+  font-weight: 500;
+  font-family: 'Inter Tight', sans-serif;
+  transition: color 0.3s;
+}
+
+.newsletter-form button:hover { color: var(--accent); }
+
+/* === FOOTER === */
+.footer {
+  background: var(--black-deep);
+  color: rgba(245, 242, 236, 0.6);
+  padding: 60px 80px 28px;
+  font-size: 13px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(245, 242, 236, 0.1);
+}
+
+.footer-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  color: var(--paper);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+}
+
+.footer-brand-name em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.footer-brand-tag {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.footer-desc {
+  color: rgba(245, 242, 236, 0.5);
+  line-height: 1.7;
+  max-width: 320px;
+  font-size: 13px;
+}
+
+.footer-address {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(245, 242, 236, 0.5);
+}
+
+.footer-heading {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.footer-list {
+  list-style: none;
+}
+
+.footer-list li { margin-bottom: 12px; }
+
+.footer-list a {
+  color: rgba(245, 242, 236, 0.6);
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 13px;
+}
+
+.footer-list a:hover { color: var(--accent); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: rgba(245, 242, 236, 0.4);
+  letter-spacing: 0.05em;
+}
+
+.footer-bottom a {
+  color: rgba(245, 242, 236, 0.4);
+  text-decoration: none;
+  margin-left: 24px;
+  transition: color 0.3s;
+}
+
+.footer-bottom a:hover { color: var(--accent); }
+
+/* === FLOATING CONTACT === */
+.float-contact {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  gap: 10px;
+  z-index: 90;
+}
+
+.float-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(26, 24, 21, 0.15);
+  transition: all 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+  border: 1px solid var(--accent);
+  text-decoration: none;
+}
+
+.float-btn:hover {
+  background: var(--accent);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.float-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--paper);
+}
+
+
+/* === REAL IMAGES === */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product:hover .img-cover,
+.project-card:hover .img-cover,
+.article:hover .img-cover,
+.case:hover .img-cover { transform: scale(1.05); }
+
+/* === REVEAL === */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === RESPONSIVE === */
+
+/* === MEDIUM SCREENS === */
+@media (max-width: 1200px) {
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
+  .logo-main { font-size: 18px; letter-spacing: 0.1em; }
+  .logo-tag { font-size: 7px; letter-spacing: 0.2em; }
+  .nav-actions { gap: 12px; }
+  .lang-switch { display: none; /* cleaned */ gap: 2px; }
+  .lang-switch button { padding: 3px 4px; }
+}
+@media (max-width: 1024px) {
+  .products { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .announce { display: none; /* cleaned */ padding: 8px 20px; font-size: 10px; letter-spacing: 0.12em; }
+  .nav { padding: 16px 20px; }
+  .nav.scrolled { padding: 12px 20px; }
+  .nav-links { display: none; }
+  .nav-actions { gap: 16px; }
+  .logo-tag { display: none; }
+  .lang-switch { display: none; /* cleaned */ display: none; }
+  .hero { padding: 60px 24px 48px; min-height: 600px; height: auto; }
+  .hero-illustration { display: none; /* hidden — real photo hero */ display: none; }
+  .hero-meta { display: none; /* cleaned */ display: none; }
+  .manifesto { padding: 80px 24px; grid-template-columns: 1fr; gap: 32px; }
+  .collection { padding: 80px 24px; }
+  .collection-header { grid-template-columns: 1fr; }
+  .collection-intro { justify-self: start; }
+  .products { grid-template-columns: 1fr; gap: 48px; }
+  .lead-banner { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+  .origins { padding: 80px 24px; }
+  .origins-grid { grid-template-columns: 1fr; gap: 48px; }
+  .projects { padding: 80px 0 80px 24px; }
+  .projects-header { padding-right: 24px; grid-template-columns: 1fr; }
+  .project-card { flex: 0 0 280px; }
+  .contract { padding: 80px 24px; }
+  .contract-inner { grid-template-columns: 1fr; gap: 48px; }
+  .contract-clients { grid-template-columns: 1fr 1fr; }
+  .trade { padding: 80px 24px; }
+  .trade-inner { grid-template-columns: 1fr; gap: 48px; }
+  .journal { padding: 80px 24px; }
+  .journal-header { flex-direction: column; align-items: flex-start; }
+  .journal-grid { grid-template-columns: 1fr; gap: 48px; }
+  .newsletter { padding: 60px 24px; }
+  .footer { padding: 60px 24px 24px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT -->
+<div class="announce">
+  <span>★</span> &nbsp; Première collection présentée à Milan Design Week — Avril 2027 &nbsp; <span>★</span>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="logo">
+    <span class="logo-main">In Situ <em>Editions</em></span>
+    <span class="logo-tag">Hong Kong · Paris</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#origins">Origines</a></li>
+    <li><a href="#projects">In Situ</a></li>
+    <li><a href="#contract">Hôtellerie</a></li>
+    <li><a href="#trade">Architectes</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-switch">
+      <button>EN</button>
+      <button class="active">FR</button>
+      <button>中</button>
+    </div>
+    <div class="nav-cart">
+      <span>Panier</span>
+      <span class="cart-count">0</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Dragon Room chinoiserie chair, hero centerpiece -->
+  <svg class="hero-illustration" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="chairLacquer" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#a8896a"/>
+        <stop offset="40%" stop-color="#8b6f47"/>
+        <stop offset="100%" stop-color="#3d2e1a"/>
+      </linearGradient>
+      <linearGradient id="chairUpholstery" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#7a3e35"/>
+        <stop offset="100%" stop-color="#4d2520"/>
+      </linearGradient>
+      <radialGradient id="brassGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#d4b88e"/>
+        <stop offset="100%" stop-color="#8b6f47"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Floor shadow -->
+    <ellipse cx="300" cy="650" rx="190" ry="14" fill="rgba(0,0,0,0.4)" opacity="0.6"/>
+
+    <!-- Subtle pattern (chinoiserie inspiration) -->
+    <g opacity="0.06" stroke="#d4b88e" stroke-width="0.5" fill="none">
+      <circle cx="250" cy="230" r="40"/>
+      <circle cx="350" cy="230" r="40"/>
+      <circle cx="300" cy="280" r="40"/>
+      <line x1="200" y1="200" x2="400" y2="200"/>
+      <line x1="200" y1="320" x2="400" y2="320"/>
+    </g>
+
+    <!-- Chair back, curved chinoiserie silhouette -->
+    <path d="M 160 220 Q 160 130 230 130 L 370 130 Q 440 130 440 220 L 440 410 Q 440 440 410 440 L 190 440 Q 160 440 160 410 Z" fill="url(#chairLacquer)"/>
+
+    <!-- Back highlight -->
+    <path d="M 168 220 Q 168 140 230 140 L 290 140 L 290 430 L 190 430 Q 168 430 168 410 Z" fill="rgba(255,255,255,0.08)"/>
+
+    <!-- Back panel detail (chinoiserie) -->
+    <path d="M 220 180 Q 300 160 380 180 Q 380 280 300 290 Q 220 280 220 180 Z" fill="rgba(0,0,0,0.15)"/>
+    <circle cx="300" cy="225" r="22" fill="none" stroke="rgba(212,184,142,0.4)" stroke-width="1"/>
+    <circle cx="300" cy="225" r="12" fill="rgba(212,184,142,0.3)"/>
+
+    <!-- Brass inlay strips -->
+    <line x1="170" y1="225" x2="430" y2="225" stroke="#d4b88e" stroke-width="1.2" opacity="0.5"/>
+
+    <!-- Seat cushion (upholstered red) -->
+    <ellipse cx="300" cy="445" rx="140" ry="20" fill="url(#chairUpholstery)"/>
+    <rect x="160" y="430" width="280" height="40" rx="6" fill="url(#chairUpholstery)"/>
+    <rect x="165" y="435" width="270" height="8" rx="2" fill="rgba(212,184,142,0.4)"/>
+
+    <!-- Capitonné tufting -->
+    <circle cx="220" cy="450" r="3" fill="rgba(0,0,0,0.3)"/>
+    <circle cx="300" cy="450" r="3" fill="rgba(0,0,0,0.3)"/>
+    <circle cx="380" cy="450" r="3" fill="rgba(0,0,0,0.3)"/>
+
+    <!-- Seat shadow -->
+    <rect x="160" y="465" width="280" height="10" fill="rgba(0,0,0,0.3)"/>
+
+    <!-- Front legs (lacquered wood) -->
+    <rect x="190" y="470" width="8" height="170" fill="#1a1815"/>
+    <rect x="190" y="470" width="3" height="170" fill="rgba(212,184,142,0.3)"/>
+    <rect x="402" y="470" width="8" height="170" fill="#1a1815"/>
+    <rect x="402" y="470" width="3" height="170" fill="rgba(212,184,142,0.3)"/>
+
+    <!-- Back legs (subtle) -->
+    <rect x="225" y="470" width="6" height="170" fill="#0e0c0a" opacity="0.6"/>
+    <rect x="369" y="470" width="6" height="170" fill="#0e0c0a" opacity="0.6"/>
+
+    <!-- Brass leg caps -->
+    <ellipse cx="194" cy="642" rx="6" ry="3" fill="url(#brassGlow)"/>
+    <ellipse cx="406" cy="642" rx="6" ry="3" fill="url(#brassGlow)"/>
+
+    <!-- Architectural annotation -->
+    <text x="465" y="220" fill="rgba(245,242,236,0.5)" font-family="Inter Tight" font-size="10" letter-spacing="2">№ 04</text>
+    <line x1="460" y1="230" x2="430" y2="240" stroke="rgba(245,242,236,0.3)" stroke-width="0.5"/>
+    <text x="465" y="270" fill="rgba(245,242,236,0.35)" font-family="Cormorant Garamond" font-size="14" font-style="italic">Dragon</text>
+  </svg>
+
+  <div class="hero-meta">— Édition № 01 · Printemps 2027</div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Depuis un studio de Hong Kong · 2011</div>
+    <h1 class="hero-title">Le mobilier, dans <em>son contexte.</em></h1>
+    <p class="hero-sub">
+      D'abord dessinées pour des clubs privés et des résidences. Aujourd'hui libérées, en éditions courtes.
+    </p>
+    <div class="hero-actions">
+      <a href="#collection" class="btn btn-light">Voir la collection</a>
+      <a href="#origins" class="btn-text">Notre histoire</a>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD TIME BANNER -->
+<section class="lead-banner reveal">
+  <div class="lead-stat">
+    <div class="lead-stat-num"><em>6</em></div>
+    <div class="lead-stat-label">Semaines production</div>
+    <div class="lead-stat-body">
+      Production Ex Works. Par avion 1 semaine, par bateau 3 à 6 semaines.
+    </div>
+  </div>
+  <div class="lead-stat">
+    <div class="lead-stat-num"><em>15</em></div>
+    <div class="lead-stat-label">Ans de pratique</div>
+    <div class="lead-stat-body">
+      In Situ &amp; Partners, Hong Kong, depuis 2011.
+    </div>
+  </div>
+  <div class="lead-stat">
+    <div class="lead-stat-num"><em>15</em></div>
+    <div class="lead-stat-label">Pièces dans la collection</div>
+    <div class="lead-stat-body">
+      Sièges, tables, luminaires, accessoires.
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto reveal">
+  <div class="section-label" style="display:none;">Manifeste</div>
+  <p class="manifesto-text">
+    Chaque pièce a <em>déjà existé quelque part</em> — un club privé à Hong Kong, un salon à Macau, un appartement à Paris. Dessinée pour un lieu. Affinée par l'usage. Aujourd'hui <span class="accent">libérée</span>.
+  </p>
+</section>
+
+<!-- COLLECTION -->
+<section class="collection" id="collection">
+  <div class="collection-header reveal">
+    <div>
+      <div class="section-label">La collection</div>
+      <h2 class="collection-title">Quinze pièces.<br><em>Six salons.</em></h2>
+    </div>
+    <p class="collection-intro">
+      Produites en séries courtes par nos partenaires du Pearl River Delta. Six semaines.
+    </p>
+  </div>
+
+  <div class="products">
+    <!-- DRAGON — Chinoiserie chair from Bankers Club -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-dragon.jpg" alt="Dragon Chair" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">Du Bankers Club, Dragon Room</div>
+          <h3 class="product-name">Dragon</h3>
+          <div class="product-meta">Chaise chinoiserie · Chêne laqué, velours de soie vermillon, incrustations de laiton</div>
+        </div>
+        <div class="product-price">€ 4 200</div>
+      </div>
+    </article>
+
+    <!-- LIBRARY — alcove chair from HK Club Library -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-alcove.jpg" alt="Alcove Chair" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">De The Library · HK Club</div>
+          <h3 class="product-name">Alcove</h3>
+          <div class="product-meta">Fauteuil de lecture · Cadre chêne patiné, cuir cognac capitonné main</div>
+        </div>
+        <div class="product-price">€ 5 800</div>
+      </div>
+    </article>
+
+    <!-- XVI — Travertine side table from Paris XVI -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-xvi.jpg" alt="XVI Side Table" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">De Paris XVI · Salon</div>
+          <h3 class="product-name">XVI</h3>
+          <div class="product-meta">Table d'appoint · Plateau travertin romain, pied bronze patiné</div>
+        </div>
+        <div class="product-price">€ 3 400</div>
+      </div>
+    </article>
+
+    <!-- TEFAF — alabaster pendant -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-forms.jpg" alt="Forms Pendant" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">De TEFAF Maastricht, 2023</div>
+          <h3 class="product-name">Forms</h3>
+          <div class="product-meta">Suspension · Albâtre espagnol sculpté main, laiton brossé</div>
+        </div>
+        <div class="product-price">€ 6 400</div>
+      </div>
+    </article>
+
+    <!-- TREASURY — Velvet banquette -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-treasury.jpg" alt="Treasury Banquette" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">De The Treasury · Bankers Club</div>
+          <h3 class="product-name">Treasury</h3>
+          <div class="product-meta">Banquette velours · Capitonnage à colonnes, pieds laiton, plusieurs longueurs</div>
+        </div>
+        <div class="product-price">€ 8 200</div>
+      </div>
+    </article>
+
+    <!-- CHAIRMAN — Bar stool from Wynn Palace -->
+    <article class="product reveal">
+      <div class="product-image">
+<img src="img/product-chairman.jpg" alt="Chairman Bar Stool" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-origin">Du Chairman's Club · Wynn Palace</div>
+          <h3 class="product-name">Chairman</h3>
+          <div class="product-meta">Tabouret de bar · Colonne cuivre patiné, détail cannelé, assise cuir</div>
+        </div>
+        <div class="product-price">€ 2 400</div>
+      </div>
+    </article>
+  </div>
+
+  <div class="collection-cta">
+    <a href="#" class="btn btn-dark">Voir les 15 pièces</a>
+  </div>
+</section>
+
+<!-- ORIGINS -->
+<section class="origins" id="origins">
+  <div class="origins-grid reveal">
+    <div class="origins-visual">
+      <img src="img/paris-hallway.jpg" alt="Paris XVI Apartment — In Situ & Partners" class="img-cover">
+    </div>
+    <div class="origins-content">
+      <div class="section-label">Origines</div>
+      <h2 class="origins-heading">Depuis un studio <em>en exercice.</em></h2>
+      <p class="origins-body">
+        Fondé à Hong Kong en 2011 par Yacine Bensalem. Le Chairman's Club au Wynn Palace, le Hong Kong Club, le Bankers Club, des résidences à Paris, le showroom Forms à TEFAF Maastricht. <em>In Situ Editions</em> existe parce que ces pièces méritaient de vivre au-delà des salons pour lesquels elles ont été dessinées.
+      </p>
+      <a href="#" class="origins-link">Lire le récit complet →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <div class="section-label">Vu in situ</div>
+      <h2 class="projects-title">Là où ces pièces ont<br><em>déjà vécu.</em></h2>
+    </div>
+    <p class="projects-sub">
+      Découvrez les salons d'où elles viennent.
+    </p>
+  </div>
+
+  <div class="projects-row">
+    <!-- WYNN PALACE -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/bankers-tunnel.jpg" alt="Chairman's Club, Wynn Palace" class="img-cover">
+      </div>
+      <div class="project-loc">Macau · 2024–2026</div>
+      <h3 class="project-name">Chairman's Club, Wynn Palace</h3>
+      <p class="project-desc">Six espaces privés au sein du club le plus exclusif du casino le plus prestigieux d'Asie. The Wine Cellar, The Bar, The Cigar Salon, The Tasting Counters.</p>
+      <div class="project-pieces">Pièces : Chairman, Dragon, Treasury</div>
+    </div>
+
+    <!-- HK CLUB -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/bankers-lobby.jpg" alt="The Library, HK Club" class="img-cover">
+      </div>
+      <div class="project-loc">Hong Kong · 2022</div>
+      <h3 class="project-name">The Library, The Hong Kong Club</h3>
+      <p class="project-desc">Rénovation de la bibliothèque du club privé le plus ancien et le plus exclusif de Hong Kong, fondé en 1846. Plafonds à caissons, parquet à chevrons, proportions sacrales.</p>
+      <div class="project-pieces">Pièces : Alcove, Forms</div>
+    </div>
+
+    <!-- BANKERS CLUB -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/bankers-lounge.jpg" alt="The Hong Kong Bankers Club" class="img-cover">
+      </div>
+      <div class="project-loc">Hong Kong · 2021</div>
+      <h3 class="project-name">The Hong Kong Bankers Club</h3>
+      <p class="project-desc">2 000 m², 22 000 sqft, 2 000 membres. Laque rouge et or auspicieuse, incrustations de laiton, cuivre patiné cannelé, bar en marbre noir Sahara.</p>
+      <div class="project-pieces">Pièces : Dragon, Treasury</div>
+    </div>
+
+    <!-- TEFAF -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/bankers-reception.jpg" alt="Forms HQ" class="img-cover">
+      </div>
+      <div class="project-loc">Maastricht · 2023</div>
+      <h3 class="project-name">Showroom Forms, TEFAF Maastricht</h3>
+      <p class="project-desc">Scénographie du stand Forms à la foire d'art et de design la plus prestigieuse au monde. Luminaires sculpturaux, socles géométriques, présentation muséale.</p>
+      <div class="project-pieces">Pièces : Forms, XVI</div>
+    </div>
+
+    <!-- PARIS XVI -->
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/paris-hallway.jpg" alt="Paris XVI Apartment" class="img-cover">
+      </div>
+      <div class="project-loc">Paris XVI · 2023</div>
+      <h3 class="project-name">Appartement Paris XVI</h3>
+      <p class="project-desc">Appartement haussmannien de 340 m² avec vue sur la Tour Eiffel. Artisans italiens et français, étagères cuir et bronze, parquet de chêne à chevrons.</p>
+      <div class="project-pieces">Pièces : XVI, Dragon</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRACT / HOSPITALITY -->
+<section class="contract" id="contract">
+  <div class="contract-inner reveal">
+    <div class="contract-content">
+      <div class="section-label">Pour l'hôtellerie</div>
+      <h2 class="contract-heading">Conçu pour <em>l'intensité hôtelière.</em></h2>
+      <p class="contract-body">
+        La même robustesse qu'un bar du Wynn Palace. La même finition qu'un salon du Hong Kong Club. Commandes en volume, finitions sur mesure, six semaines Ex Works.
+      </p>
+      <div class="contract-clients">
+        <div class="client-name">Wynn Palace</div>
+        <div class="client-name">The Hong Kong Club</div>
+        <div class="client-name">Bankers Club</div>
+        <div class="client-name">Four Seasons</div>
+        <div class="client-name">Peninsula Hotels</div>
+        <div class="client-name">Galeon Yachts</div>
+      </div>
+      <div class="contract-cta-group">
+        <a href="#" class="btn btn-light">Demander le catalogue</a>
+        <a href="#" class="btn-text">Parler à notre équipe</a>
+      </div>
+    </div>
+    <div class="contract-visual">
+      <img src="img/bankers-reception.jpg" alt="Bankers Club — Contract" class="img-cover">
+    </div>
+  </div>
+</section>
+
+<!-- TRADE -->
+<section class="trade" id="trade">
+  <div class="trade-inner reveal">
+    <div class="trade-content">
+      <div class="section-label">Architectes &amp; décorateurs</div>
+      <h2 class="trade-heading">Un programme pour <em>les professionnels.</em></h2>
+      <p class="trade-body">
+        Conditions dédiées pour architectes, décorateurs et contractants.
+      </p>
+      <ul class="trade-benefits">
+        <li><span>Remise</span><span>25 % à 35 %</span></li>
+        <li><span>Paiement</span><span>30 jours nets</span></li>
+        <li><span>Fichiers techniques</span><span>CAD · BIM · 3D</span></li>
+        <li><span>Échantillons matière</span><span>Offerts</span></li>
+        <li><span>Account manager</span><span>Dès 50k€/an</span></li>
+        <li><span>Accès avant-première</span><span>Nouvelles pièces &amp; éditions</span></li>
+      </ul>
+      <a href="#" class="btn btn-dark">Demander l'accès au programme</a>
+    </div>
+    <div class="trade-visual">
+      <img src="img/paris-corridor.jpg" alt="In Situ Editions Showroom" class="img-cover">
+    </div>
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="journal" id="journal">
+  <div class="journal-header reveal">
+    <div>
+      <div class="section-label">Journal</div>
+      <h2 class="journal-title">Notes <em>de l'atelier.</em></h2>
+    </div>
+  </div>
+
+  <div class="journal-grid">
+    <article class="article reveal">
+      <div class="article-image">
+        <img src="img/journal-library.jpg" alt="Inside the atelier" class="img-cover">
+      </div>
+      <div class="article-meta">
+        <span>Savoir-faire</span>
+        <span>4 min de lecture</span>
+      </div>
+      <h3 class="article-title">Dans notre atelier du Pearl River Delta</h3>
+      <p class="article-excerpt">À deux heures du studio de Hong Kong, notre partenaire de fabrication affine la chaise Dragon depuis trois mois. Notes d'une visite.</p>
+    </article>
+
+    <article class="article reveal">
+      <div class="article-image">
+        <img src="img/journal-wynn.jpg" alt="TEFAF Maastricht" class="img-cover">
+      </div>
+      <div class="article-meta">
+        <span>Origines</span>
+        <span>6 min de lecture</span>
+      </div>
+      <h3 class="article-title">TEFAF Maastricht 2023 — ce que nous en avons appris</h3>
+      <p class="article-excerpt">La foire d'art et de design la plus prestigieuse au monde. Là où la suspension Forms a été montrée pour la première fois. Ce que cela nous a appris sur la présence.</p>
+    </article>
+
+    <article class="article reveal">
+      <div class="article-image">
+        <img src="img/journal-utrecht.jpg" alt="Vermilion silk velvet" class="img-cover">
+      </div>
+      <div class="article-meta">
+        <span>Matières</span>
+        <span>5 min de lecture</span>
+      </div>
+      <h3 class="article-title">Le velours de soie vermillon — le choix pour Dragon</h3>
+      <p class="article-excerpt">Pourquoi nous avons choisi le velours de soie italien plutôt que des alternatives synthétiques plus résistantes pour la chaise Dragon, et comment vivre avec une matière de luxe.</p>
+    </article>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-inner">
+    <h2 class="newsletter-title">Abonnez-vous au <em>Journal.</em></h2>
+    <p class="newsletter-body">
+      Une lettre par mois. Pas de promotion.
+    </p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Merci ✓';">
+      <input type="email" placeholder="votre adresse email" required>
+      <button type="submit">S'abonner →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">In Situ <em>Editions</em></div>
+      <div class="footer-brand-tag">Hong Kong · Paris</div>
+      <p class="footer-desc">Mobilier né d'intérieurs réels. Dessiné à Hong Kong par In Situ &amp; Partners, fabriqué par nos partenaires du Pearl River Delta, six semaines de production plus livraison dans le monde entier.</p>
+      <div class="footer-address">
+        4/F, Wanchai Commercial Centre<br>
+        194-204 Johnston Rd, Wan Chai<br>
+        Hong Kong<br><br>
+        +852 3422 8710<br>
+        editions@insitueditions.com
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Boutique</div>
+      <ul class="footer-list">
+        <li><a href="#">Sièges</a></li>
+        <li><a href="#">Tables</a></li>
+        <li><a href="#">Luminaires</a></li>
+        <li><a href="#">Accessoires</a></li>
+        <li><a href="#">Éditions limitées</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Maison</div>
+      <ul class="footer-list">
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">In Situ &amp; Partners</a></li>
+        <li><a href="#">Presse</a></li>
+        <li><a href="#">Visite du showroom</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Professionnels</div>
+      <ul class="footer-list">
+        <li><a href="#">Architectes &amp; décorateurs</a></li>
+        <li><a href="#">Hôtellerie &amp; contract</a></li>
+        <li><a href="#">Catalogue à télécharger</a></li>
+        <li><a href="#">Fichiers CAD &amp; BIM</a></li>
+        <li><a href="#">Échantillons matière</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Aide</div>
+      <ul class="footer-list">
+        <li><a href="#">Livraison (6 semaines + transport)</a></li>
+        <li><a href="#">Service ganté</a></li>
+        <li><a href="#">Entretien &amp; garantie</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2027 In Situ Editions · Une initiative d'In Situ &amp; Partners, Hong Kong</div>
+    <div>
+      <a href="#">Mentions légales</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Instagram</a>
+      <a href="#">WeChat</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING CONTACT (WhatsApp + WeChat for Asian market) -->
+<div class="float-contact">
+  <a href="#" class="float-btn" title="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.488"/>
+    </svg>
+  </a>
+  <a href="#" class="float-btn" title="WeChat">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.813-.05-.172-.609-.27-1.248-.27-1.914 0-3.999 3.892-7.244 8.691-7.244.276 0 .543.024.81.062-.78-3.65-4.539-6.331-9.043-6.331zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-4.255 0-7.702 2.93-7.702 6.54 0 3.612 3.447 6.541 7.703 6.541.882 0 1.74-.146 2.514-.392a.703.703 0 0 1 .584.082l1.589.926a.272.272 0 0 0 .137.045c.135 0 .243-.11.243-.245 0-.06-.025-.118-.04-.176l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.439 19.235 24.5 17.65 24.5 15.398c0-3.61-3.447-6.54-7.702-6.54zm-2.578 3.182c.428 0 .775.353.775.787a.781.781 0 0 1-.775.785.78.78 0 0 1-.776-.785c0-.434.347-.787.776-.787zm5.157 0c.428 0 .775.353.775.787a.781.781 0 0 1-.775.785.78.78 0 0 1-.776-.785c0-.434.347-.787.776-.787z"/>
+    </svg>
+  </a>
+</div>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const targetId = link.getAttribute('href');
+    if (targetId === '#') return;
+    const target = document.querySelector(targetId);
+    if (target) {
+      e.preventDefault();
+      const offsetTop = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  });
+});
+
+// Language switcher (visual only for now)
+document.querySelectorAll('.lang-switch button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
