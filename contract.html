@@ -735,6 +735,31 @@ body::before {
   .contact-bar { grid-template-columns: 1fr; padding: 48px 24px; gap: 32px; }
   .footer { padding: 24px 20px; }
 }
+
+/* === MOBILE NAV TOGGLE === */
+.nav-toggle { display: none; background: transparent; border: 0; padding: 8px; cursor: pointer; color: var(--black); }
+.nav-toggle svg { width: 24px; height: 24px; display: block; }
+@media (max-width: 879px) {
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .nav-links.is-open {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    padding: 12px 20px 20px;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    z-index: 150;
+  }
+  .nav-links.is-open li { width: 100%; border-bottom: 1px solid var(--line); }
+  .nav-links.is-open li:last-child { border-bottom: 0; }
+  .nav-links.is-open a { display: flex; align-items: center; min-height: 44px; padding: 4px 0; font-size: 13px; }
+}
+
 </style>
 </head>
 <body>
@@ -744,6 +769,9 @@ body::before {
   <a href="index.html" class="logo">
     <span class="logo-main">In Situ <em>Editions</em></span>
   </a>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
   <ul class="nav-links">
     <li><a href="index.html#collection">Collection</a></li>
     <li><a href="index.html#origins">Origins</a></li>
@@ -1074,7 +1102,7 @@ body::before {
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
+<footer class="footer" id="footer">
   © 2027 In Situ Editions · An initiative of In Situ & Partners, Hong Kong
   <br><br>
   <a href="index.html">Home</a>
@@ -1092,6 +1120,18 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+<script>
+(function navToggle() {
+  const btn = document.querySelector('.nav-toggle');
+  const list = document.querySelector('.nav-links');
+  if (!btn || !list) return;
+  btn.addEventListener('click', () => {
+    const open = list.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
 </script>
 
 </body>

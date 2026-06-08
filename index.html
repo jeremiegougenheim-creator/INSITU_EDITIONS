@@ -1392,6 +1392,34 @@ body::before {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
   .footer-bottom { flex-direction: column; gap: 16px; }
 }
+
+.product-link { text-decoration: none; color: inherit; display: block; transition: transform 0.4s ease, opacity 0.4s ease; }
+.product-link:hover { transform: translateY(-2px); opacity: 0.96; }
+
+/* === MOBILE NAV TOGGLE === */
+.nav-toggle { display: none; background: transparent; border: 0; padding: 8px; cursor: pointer; color: var(--black); }
+.nav-toggle svg { width: 24px; height: 24px; display: block; }
+@media (max-width: 879px) {
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .nav-links.is-open {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    padding: 12px 20px 20px;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    z-index: 150;
+  }
+  .nav-links.is-open li { width: 100%; border-bottom: 1px solid var(--line); }
+  .nav-links.is-open li:last-child { border-bottom: 0; }
+  .nav-links.is-open a { display: flex; align-items: center; min-height: 44px; padding: 4px 0; font-size: 13px; }
+}
+
 </style>
 </head>
 <body>
@@ -1407,6 +1435,9 @@ body::before {
     <span class="logo-main">In Situ <em>Editions</em></span>
     
   </a>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
   <ul class="nav-links">
     <li><a href="#collection">Collection</a></li>
     <li><a href="#origins">Origins</a></li>
@@ -1414,7 +1445,7 @@ body::before {
     <li><a href="#contract">Contract</a></li>
     <li><a href="#trade">Trade</a></li>
     <li><a href="#journal">Journal</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="index.html#footer">Contact</a></li>
   </ul>
   <div class="nav-actions">
     <div class="lang-switch">
@@ -1579,7 +1610,7 @@ body::before {
 
   <div class="products">
     <!-- № 01 -->
-    <article class="product reveal">
+    <a href="product-sideboard-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-treasury.jpg" alt="Sideboard 01" class="img-cover">
       </div>
@@ -1591,10 +1622,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 02 -->
-    <article class="product reveal">
+    <a href="product-chair-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-alcove.jpg" alt="Chair 01" class="img-cover">
       </div>
@@ -1606,10 +1637,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 03 -->
-    <article class="product reveal">
+    <a href="product-dragon.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-dragon.jpg" alt="Chair 02" class="img-cover">
       </div>
@@ -1621,10 +1652,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 04 -->
-    <article class="product reveal">
+    <a href="product-high-chair-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-chairman.jpg" alt="High Chair 01" class="img-cover">
       </div>
@@ -1636,10 +1667,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 05 -->
-    <article class="product reveal">
+    <a href="product-lounge-chair-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-alcove.jpg" alt="Lounge Chair 01" class="img-cover">
       </div>
@@ -1651,10 +1682,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 06 -->
-    <article class="product reveal">
+    <a href="product-lounge-chair-02.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-treasury.jpg" alt="Lounge Chair 02" class="img-cover">
       </div>
@@ -1666,10 +1697,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 07 -->
-    <article class="product reveal">
+    <a href="product-coffee-table-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-xvi.jpg" alt="Coffee Table 01" class="img-cover">
       </div>
@@ -1681,10 +1712,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 08 -->
-    <article class="product reveal">
+    <a href="product-coffee-table-02.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-forms.jpg" alt="Coffee Table 02" class="img-cover">
       </div>
@@ -1696,10 +1727,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 09 -->
-    <article class="product reveal">
+    <a href="product-dining-table-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-xvi.jpg" alt="Dining Table 01" class="img-cover">
       </div>
@@ -1711,10 +1742,10 @@ body::before {
         </div>
         <div class="product-price">On request</div>
       </div>
-    </article>
+    </article></a>
 
     <!-- № 10 — CEO TABLE (hero piece, photos coming soon) -->
-    <article class="product reveal">
+    <a href="product-ceo-table.html" class="product-link"><article class="product reveal">
       <div class="product-image">
 <img src="img/product-chairman.jpg" alt="CEO Table — coming soon" class="img-cover">
       </div>
@@ -1726,7 +1757,7 @@ body::before {
         </div>
         <div class="product-price">Coming soon</div>
       </div>
-    </article>
+    </article></a>
   </div>
 
   <div class="collection-cta" style="display:none;">
@@ -1960,7 +1991,7 @@ body::before {
 </section>
 
 <!-- FOOTER -->
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="footer-grid">
     <div>
       <div class="footer-brand-name">In Situ <em>Editions</em></div>
@@ -2075,6 +2106,18 @@ document.querySelectorAll('.lang-switch button').forEach(btn => {
     btn.classList.add('active');
   });
 });
+</script>
+
+<script>
+(function navToggle() {
+  const btn = document.querySelector('.nav-toggle');
+  const list = document.querySelector('.nav-links');
+  if (!btn || !list) return;
+  btn.addEventListener('click', () => {
+    const open = list.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
 </script>
 
 </body>
