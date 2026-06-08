@@ -235,6 +235,54 @@ body::before {
   transition: opacity 0.5s;
 }
 
+/* === GALLERY CONTEXT TOGGLE (En situ / Isolé) === */
+.gallery-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(.22,.61,.36,1);
+  pointer-events: none;
+}
+.gallery-main[data-mode="insitu"] .gallery-layer-insitu { opacity: 1; }
+.gallery-main[data-mode="isole"]  .gallery-layer-isole  { opacity: 1; }
+
+.gallery-toggle {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  background: rgba(10, 10, 8, 0.55);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 148, 95, 0.25);
+  border-radius: 100px;
+}
+.gallery-toggle button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 240, 232, 0.85);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background-color 0.4s, color 0.4s;
+}
+.gallery-toggle button.active {
+  background: var(--ivoire, #F5F0E8);
+  color: var(--noir, #0A0A08);
+}
+
 .gallery-main .view-360 {
   position: absolute;
   bottom: 20px;
@@ -1079,6 +1127,213 @@ body::before {
   .related-grid { grid-template-columns: 1fr; }
   .footer { padding: 48px 24px 24px; }
 }
+
+/* === BTN RESERVE (vermillon) === */
+.btn-reserve {
+  width: 100%;
+  padding: 18px 24px;
+  background: #C43E2A;
+  color: #fff;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+.btn-reserve:hover { background: #a8331f; }
+.btn-reserve:active { transform: translateY(1px); }
+
+/* === INQUIRY MODAL === */
+.inquiry-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 10, 8, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.inquiry-modal.is-open { display: flex; }
+
+.inquiry-card {
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 40px 36px 32px;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+.inquiry-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+.inquiry-close:hover { color: var(--black); }
+
+.inquiry-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 10px;
+}
+.inquiry-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--black);
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+.inquiry-lede {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.inquiry-field { margin-bottom: 16px; }
+.inquiry-field label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.inquiry-field input,
+.inquiry-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--black);
+  transition: border-color 0.2s;
+}
+.inquiry-field input:focus,
+.inquiry-field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.inquiry-field textarea { min-height: 100px; resize: vertical; }
+
+.inquiry-submit {
+  width: 100%;
+  margin-top: 8px;
+  padding: 16px 24px;
+  background: #C43E2A;
+  color: #fff;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.inquiry-submit:hover { background: #a8331f; }
+
+.inquiry-foot {
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* === STICKY MOBILE BAR (≤ 879px) === */
+.sticky-mobile-bar { display: none; }
+
+@media (max-width: 879px) {
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+
+  .sticky-mobile-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(245, 242, 236, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+  }
+
+  .smb-price {
+    flex: 1;
+    min-width: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.1;
+    color: var(--black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .smb-price small {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .smb-wa {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #25D366;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+  .smb-wa svg { width: 24px; height: 24px; fill: #fff; }
+
+  .smb-reserve {
+    flex: 0 0 auto;
+    height: 48px;
+    padding: 0 18px;
+    border-radius: 12px;
+    background: #C43E2A;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+}
 </style>
 </head>
 <body>
@@ -1121,7 +1376,13 @@ body::before {
 
   <!-- GALLERY -->
   <div class="gallery">
-    <div class="gallery-main">
+    <div class="gallery-main" data-mode="insitu">
+      <div class="gallery-toggle" role="tablist" aria-label="Image context">
+        <button type="button" class="active" data-mode="insitu" aria-pressed="true">En situ</button>
+        <button type="button" data-mode="isole" aria-pressed="false">Isolé</button>
+      </div>
+      <img class="gallery-layer gallery-layer-insitu" src="img/bankers-lounge.jpg" alt="Dragon chair in The Bankers Club lounge">
+      <img class="gallery-layer gallery-layer-isole" src="img/product-dragon.jpg" alt="Dragon chair, isolated product view">
       <div class="view-360">360° view</div>
       <svg viewBox="0 0 600 750" xmlns="http://www.w3.org/2000/svg" id="main-image">
         <defs>
@@ -1326,7 +1587,7 @@ body::before {
 
     <!-- ACTIONS -->
     <div class="actions">
-      <button class="btn btn-primary">Add to cart — € 4,680</button>
+      <button class="btn btn-reserve" type="button" data-open-inquiry>Réserver cette édition</button>
     </div>
 
     <div class="samples">
@@ -1704,6 +1965,24 @@ document.querySelectorAll('.delivery-opt').forEach(opt => {
   });
 });
 
+// Gallery context toggle (En situ / Isolé)
+(function galleryContextToggle() {
+  const main = document.querySelector('.gallery-main');
+  const buttons = document.querySelectorAll('.gallery-toggle button');
+  if (!main || !buttons.length) return;
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      main.dataset.mode = mode;
+      buttons.forEach(b => {
+        const active = b === btn;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    });
+  });
+})();
+
 // Gallery thumb selection
 document.querySelectorAll('.gallery-thumb').forEach(thumb => {
   thumb.addEventListener('click', () => {
@@ -1711,6 +1990,80 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
     thumb.classList.add('active');
   });
 });
+
+// Sync sticky mobile bar price with main info price
+(function syncStickyPrice() {
+  const source = document.querySelector('.info-price');
+  const target = document.getElementById('smb-price-value');
+  if (!source || !target) return;
+  const extract = () => {
+    const clone = source.cloneNode(true);
+    clone.querySelectorAll('small').forEach(el => el.remove());
+    target.textContent = clone.textContent.trim();
+  };
+  extract();
+  new MutationObserver(extract).observe(source, { childList: true, characterData: true, subtree: true });
+})();
+</script>
+
+<!-- STICKY MOBILE BAR (≤ 879px) -->
+<div class="sticky-mobile-bar" role="region" aria-label="Reservation actions">
+  <div class="smb-price">
+    <small>From</small>
+    <span id="smb-price-value">€ 4,200</span>
+  </div>
+  <a class="smb-wa" href="https://wa.me/85212345678?text=Hello%2C%20I%27m%20interested%20in%20the%20Dragon%20chair." target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.967-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.226 1.36.194 1.871.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.889-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.886 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <button class="smb-reserve" type="button" data-open-inquiry>Réserver</button>
+</div>
+
+<!-- INQUIRY MODAL -->
+<div class="inquiry-modal" id="inquiry-modal" role="dialog" aria-modal="true" aria-labelledby="inquiry-title" hidden>
+  <div class="inquiry-card">
+    <button class="inquiry-close" type="button" data-close-inquiry aria-label="Close">×</button>
+    <div class="inquiry-eyebrow">Édition Dragon</div>
+    <h2 class="inquiry-title" id="inquiry-title">Réserver cette édition</h2>
+    <p class="inquiry-lede">Pieces are made to order in our Pearl River Delta atelier. Tell us about your project — we reply within one business day.</p>
+    <form class="inquiry-form" id="inquiry-form" novalidate>
+      <div class="inquiry-field">
+        <label for="inq-name">Name</label>
+        <input id="inq-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="inquiry-field">
+        <label for="inq-contact">WhatsApp or email</label>
+        <input id="inq-contact" name="contact" type="text" required autocomplete="email" placeholder="+852 … or you@studio.com">
+      </div>
+      <div class="inquiry-field">
+        <label for="inq-message">Message</label>
+        <textarea id="inq-message" name="message" placeholder="Configuration, quantity, delivery destination…"></textarea>
+      </div>
+      <button class="inquiry-submit" type="submit">Send inquiry</button>
+      <div class="inquiry-foot">No payment taken — we open a private quote thread.</div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function inquiryModal() {
+  const modal = document.getElementById('inquiry-modal');
+  if (!modal) return;
+  const card = modal.querySelector('.inquiry-card');
+  const open = () => { modal.hidden = false; modal.classList.add('is-open'); document.body.style.overflow = 'hidden'; };
+  const close = () => { modal.classList.remove('is-open'); modal.hidden = true; document.body.style.overflow = ''; };
+  document.querySelectorAll('[data-open-inquiry]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); open(); }));
+  document.querySelectorAll('[data-close-inquiry]').forEach(el => el.addEventListener('click', close));
+  modal.addEventListener('click', e => { if (!card.contains(e.target)) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+  const form = document.getElementById('inquiry-form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = form.querySelector('.inquiry-submit');
+    btn.textContent = 'Sent — we will reply shortly';
+    btn.disabled = true;
+    setTimeout(close, 1400);
+  });
+})();
 </script>
 
 </body>
