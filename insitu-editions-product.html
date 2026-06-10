@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Situ Editions — Collection</title>
+<meta name="description" content="Mobilier d'auteur en éditions limitées numérotées. Chaque pièce est née dans un projet réel.">
+
+<!-- ============================================================
+     SCHEMA.ORG — à compléter avec les vraies données par pièce
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Dragon",
+  "category": "Chaise / Seating",
+  "brand": { "@type": "Brand", "name": "In Situ Editions" },
+  "description": "Chaise chinoiserie en édition limitée numérotée, née dans la Dragon Room du Hong Kong Bankers Club.",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "EUR",
+    "price": "4200",
+    "availability": "https://schema.org/LimitedAvailability",
+    "businessFunction": "http://purl.org/goodrelations/v1#Sell"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --noir:#0A0A08;
+  --noir-2:#14130F;
+  --ivoire:#F5F0E8;
+  --ivoire-soft:#EDE6DA;
+  --vermillon:#C43E2A;
+  --or:#B8945F;
+  --or-soft:#cdb288;
+  --gris:#7d786e;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --body:'DM Sans',-apple-system,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--noir);
+  color:var(--ivoire);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ---------- grain / texture overlay ---------- */
+body::before{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem clamp(1.2rem,5vw,3.5rem);
+  backdrop-filter:blur(14px);
+  background:linear-gradient(180deg,rgba(10,10,8,.85),rgba(10,10,8,.2));
+  border-bottom:1px solid rgba(184,148,95,.14);
+}
+.brand{font-family:var(--display);font-size:1.35rem;letter-spacing:.16em;font-weight:500}
+.brand span{color:var(--or)}
+nav{display:flex;gap:2rem;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
+nav a{opacity:.65;transition:opacity .3s}
+nav a:hover{opacity:1;color:var(--or-soft)}
+.nav-cta{border:1px solid rgba(184,148,95,.4);padding:.55rem 1.1rem;border-radius:2px;opacity:1!important}
+.nav-cta:hover{background:var(--or);color:var(--noir)}
+.menu-btn{display:none;background:none;border:none;color:var(--ivoire);font-size:1.4rem;cursor:pointer}
+
+/* ---------- hero strip ---------- */
+.hero{
+  padding:8.5rem clamp(1.2rem,5vw,3.5rem) 2rem;
+  position:relative;z-index:2;
+}
+.eyebrow{
+  font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--or);margin-bottom:1.4rem;display:flex;align-items:center;gap:.8rem;
+}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--or)}
+.hero h1{
+  font-family:var(--display);font-weight:300;
+  font-size:clamp(2.6rem,7vw,5.2rem);line-height:.98;letter-spacing:-.01em;
+  max-width:14ch;
+}
+.hero h1 em{font-style:italic;color:var(--or-soft)}
+.hero p{max-width:46ch;margin-top:1.6rem;color:rgba(245,240,232,.7);font-size:1.02rem}
+
+/* ============================================================
+   THE VIEWER — pièce maîtresse : toggle In Situ / Isolé
+   ============================================================ */
+.viewer{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1.25fr 1fr;
+  gap:clamp(1.5rem,4vw,4rem);
+  padding:2rem clamp(1.2rem,5vw,3.5rem) 5rem;
+  align-items:stretch;
+}
+
+/* --- stage (left) --- */
+.stage{position:relative;border-radius:4px;overflow:hidden;min-height:min(72vh,640px)}
+.scene{position:absolute;inset:0;transition:opacity 1s var(--ease)}
+.scene.hidden{opacity:0;pointer-events:none}
+
+/* IN SITU scene = pièce dans son décor d'origine (gradient évocateur) */
+.scene-situ{
+  background:
+    radial-gradient(120% 90% at 70% 10%,rgba(196,62,42,.22),transparent 55%),
+    radial-gradient(90% 70% at 20% 90%,rgba(184,148,95,.18),transparent 60%),
+    linear-gradient(155deg,#1a1712,#0c0b09 70%);
+}
+.scene-situ::after{ /* sol / perspective */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(0,0,0,.55),transparent 38%);
+}
+.scene-situ .room-lines{position:absolute;inset:0;opacity:.5}
+
+/* ISOLÉ scene = fond studio neutre, ombre portée douce */
+.scene-iso{
+  background:radial-gradient(80% 60% at 50% 42%,#26241f,#0e0d0b 78%);
+}
+.scene-iso .floor-shadow{
+  position:absolute;left:50%;bottom:14%;width:46%;height:5%;
+  transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.6),transparent);
+  filter:blur(6px);
+}
+
+/* le meuble (SVG) — remplacer par PNG détouré en prod */
+.piece-art{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);
+  width:min(62%,360px);z-index:3;transition:transform 1s var(--ease);
+  filter:drop-shadow(0 30px 40px rgba(0,0,0,.5));
+}
+.scene-iso .piece-art{transform:translate(-50%,-52%) scale(1.04)}
+.piece-art svg{width:100%;height:auto}
+.ph-photo{ /* zone "déposer la vraie photo détourée ici" */
+  position:absolute;left:50%;bottom:6%;transform:translateX(-50%);
+  font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(245,240,232,.32);border:1px dashed rgba(245,240,232,.18);
+  padding:.3rem .7rem;border-radius:2px;z-index:4;
+}
+
+/* toggle control */
+.stage-controls{
+  position:absolute;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:6;
+  display:flex;background:rgba(10,10,8,.6);backdrop-filter:blur(8px);
+  border:1px solid rgba(184,148,95,.3);border-radius:3px;padding:3px;
+}
+.stage-controls button{
+  background:none;border:none;color:rgba(245,240,232,.6);cursor:pointer;
+  font-family:var(--body);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  padding:.55rem 1.1rem;border-radius:2px;transition:.35s var(--ease);
+}
+.stage-controls button.active{background:var(--or);color:var(--noir)}
+.stage-tag{
+  position:absolute;top:1.2rem;left:1.2rem;z-index:6;
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--or-soft);opacity:0;transition:opacity .6s;
+}
+.stage-tag.show{opacity:1}
+
+/* edition badge */
+.edition-badge{
+  position:absolute;top:1.2rem;right:1.2rem;z-index:6;text-align:right;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.55);
+}
+.edition-badge b{display:block;font-family:var(--display);font-size:1.5rem;letter-spacing:0;color:var(--ivoire);font-weight:400}
+
+/* --- panel (right) --- */
+.panel{display:flex;flex-direction:column;justify-content:center;padding:1rem 0}
+.panel .ptype{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--or)}
+.panel h2{font-family:var(--display);font-weight:300;font-size:clamp(2.4rem,5vw,3.6rem);line-height:1;margin:.5rem 0 .2rem}
+.provenance{display:flex;align-items:center;gap:.6rem;color:rgba(245,240,232,.6);font-size:.86rem;margin-bottom:1.5rem}
+.provenance .dot{width:6px;height:6px;border-radius:50%;background:var(--vermillon)}
+.story{color:rgba(245,240,232,.66);font-size:.96rem;line-height:1.75;border-left:1px solid rgba(184,148,95,.3);padding-left:1.1rem;margin-bottom:1.8rem}
+
+/* finishes configurator */
+.cfg-label{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,240,232,.5);margin-bottom:.7rem}
+.finishes{display:flex;gap:.7rem;margin-bottom:1.8rem;flex-wrap:wrap}
+.swatch{width:38px;height:38px;border-radius:50%;cursor:pointer;border:1px solid rgba(245,240,232,.2);position:relative;transition:transform .25s var(--ease)}
+.swatch:hover{transform:scale(1.08)}
+.swatch.active{box-shadow:0 0 0 2px var(--noir),0 0 0 3px var(--or)}
+.swatch span{position:absolute;bottom:-1.4rem;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.62rem;color:rgba(245,240,232,.45);opacity:0;transition:.25s}
+.swatch:hover span,.swatch.active span{opacity:1}
+
+/* price + specs */
+.price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.4rem}
+.price{font-family:var(--display);font-size:2.2rem;font-weight:400}
+.lead{font-size:.78rem;color:var(--or-soft);letter-spacing:.04em}
+.specs{display:flex;gap:1.8rem;margin:1.4rem 0 2rem;flex-wrap:wrap}
+.specs div{font-size:.78rem;color:rgba(245,240,232,.6)}
+.specs b{display:block;color:var(--ivoire);font-weight:400;font-size:.95rem;margin-bottom:.15rem;font-family:var(--display)}
+
+/* CTA — inquiry driven, jamais "add to cart" */
+.cta-row{display:flex;gap:.9rem;flex-wrap:wrap}
+.btn{
+  font-family:var(--body);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:1rem 1.7rem;border-radius:2px;cursor:pointer;transition:.35s var(--ease);
+  display:inline-flex;align-items:center;gap:.6rem;border:1px solid transparent;
+}
+.btn-primary{background:var(--vermillon);color:var(--ivoire)}
+.btn-primary:hover{background:#a93221}
+.btn-ghost{border-color:rgba(184,148,95,.4);color:var(--ivoire)}
+.btn-ghost:hover{background:var(--or);color:var(--noir);border-color:var(--or)}
+
+/* ---------- collection rail (piece switcher) ---------- */
+.rail-wrap{position:relative;z-index:2;padding:2rem clamp(1.2rem,5vw,3.5rem) 5rem;border-top:1px solid rgba(184,148,95,.14)}
+.rail-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.6rem}
+.rail-head h3{font-family:var(--display);font-weight:300;font-size:1.7rem}
+.rail-head span{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--or)}
+.rail{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.rail::-webkit-scrollbar{height:3px}
+.rail::-webkit-scrollbar-thumb{background:var(--or)}
+.chip{
+  flex:0 0 auto;width:150px;scroll-snap-align:start;cursor:pointer;
+  border:1px solid rgba(184,148,95,.16);border-radius:3px;padding:1rem;
+  transition:.35s var(--ease);background:rgba(255,255,255,.012);
+}
+.chip:hover,.chip.active{border-color:var(--or);background:rgba(184,148,95,.07)}
+.chip .mini{height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;opacity:.85}
+.chip .mini svg{height:74px;width:auto}
+.chip h4{font-family:var(--display);font-size:1.2rem;font-weight:400}
+.chip p{font-size:.66rem;color:rgba(245,240,232,.45);letter-spacing:.04em}
+.chip .cp{font-size:.78rem;color:var(--or-soft);margin-top:.4rem}
+
+/* ---------- payment / inquiry footer note ---------- */
+.payband{
+  position:relative;z-index:2;display:flex;gap:2rem;flex-wrap:wrap;align-items:center;justify-content:center;
+  padding:2.2rem clamp(1.2rem,5vw,3.5rem);border-top:1px solid rgba(184,148,95,.14);
+  font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,240,232,.45);
+}
+.payband b{color:var(--or-soft);font-weight:400}
+
+/* ---------- inquiry modal ---------- */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(5,5,4,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1.2rem}
+.modal-bg.open{display:flex}
+.modal{background:var(--noir-2);border:1px solid rgba(184,148,95,.3);border-radius:4px;max-width:440px;width:100%;padding:clamp(1.6rem,5vw,2.6rem);position:relative}
+.modal .x{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(245,240,232,.5);font-size:1.3rem;cursor:pointer}
+.modal h3{font-family:var(--display);font-weight:300;font-size:2rem;margin-bottom:.3rem}
+.modal p{color:rgba(245,240,232,.6);font-size:.88rem;margin-bottom:1.6rem}
+.modal label{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.5);display:block;margin-bottom:.4rem}
+.modal input,.modal textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,148,95,.2);border-radius:2px;padding:.8rem;color:var(--ivoire);font-family:var(--body);font-size:.9rem;margin-bottom:1.1rem}
+.modal input:focus,.modal textarea:focus{outline:none;border-color:var(--or)}
+.modal .btn-primary{width:100%;justify-content:center}
+
+/* ---------- responsive ---------- */
+@media(max-width:880px){
+  nav{display:none}
+  .menu-btn{display:block}
+  .viewer{grid-template-columns:1fr;gap:1.5rem}
+  .stage{min-height:58vh}
+  .panel{padding:0}
+}
+@media(max-width:560px){
+  .hero{padding-top:6.5rem}
+  .specs{gap:1.2rem}
+  .cta-row .btn{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">IN SITU<span>·</span>EDITIONS</div>
+  <nav>
+    <a href="#">Collection</a>
+    <a href="#">Provenance</a>
+    <a href="#">Contract / Trade</a>
+    <a href="#" class="nav-cta" onclick="openInquiry();return false">Demander une pièce</a>
+  </nav>
+  <button class="menu-btn" aria-label="Menu">☰</button>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Éditions limitées numérotées</div>
+  <h1>Chaque pièce est <em>née</em> dans un lieu réel.</h1>
+  <p>Le mobilier conçu pour le Wynn Palace, le Hong Kong Club et le Bankers Club, désormais édité en petites séries vérifiables. Pas une reproduction — une provenance.</p>
+</section>
+
+<!-- ====================== VIEWER ====================== -->
+<section class="viewer">
+  <div class="stage" id="stage">
+    <div class="scene scene-situ" id="sceneSitu">
+      <svg class="room-lines" viewBox="0 0 600 600" preserveAspectRatio="none" fill="none">
+        <path d="M0 380 L600 320" stroke="#B8945F" stroke-width="1" opacity=".5"/>
+        <path d="M70 0 L130 600" stroke="#B8945F" stroke-width="1" opacity=".3"/>
+        <path d="M530 0 L470 600" stroke="#B8945F" stroke-width="1" opacity=".3"/>
+        <rect x="180" y="60" width="240" height="150" stroke="#B8945F" stroke-width="1" opacity=".25"/>
+      </svg>
+    </div>
+    <div class="scene scene-iso hidden" id="sceneIso">
+      <div class="floor-shadow"></div>
+    </div>
+
+    <div class="piece-art" id="pieceArt"><!-- svg injected --></div>
+    <div class="ph-photo">Zone photo détourée · .png transparent</div>
+
+    <div class="stage-tag show" id="stageTag">En situ — Dragon Room, Bankers Club</div>
+    <div class="edition-badge">Édition<b id="edRemain">N° 04 / 12</b></div>
+
+    <div class="stage-controls">
+      <button class="active" data-view="situ" onclick="setView('situ')">En situ</button>
+      <button data-view="iso" onclick="setView('iso')">Isolé</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptype" id="pType">Chaise chinoiserie</div>
+    <h2 id="pName">Dragon</h2>
+    <div class="provenance"><span class="dot"></span><span id="pProv">Hong Kong Bankers Club · Dragon Room · 2021</span></div>
+    <p class="story" id="pStory">Dessinée pour les 2 000 membres du club, la Dragon a été pensée pour tenir un dîner de quatre heures sans jamais peser. Dossier sculpté à la main, laque profonde, structure issue des mêmes ateliers qui équipent le Wynn Palace.</p>
+
+    <div class="cfg-label">Finition</div>
+    <div class="finishes" id="finishes"></div>
+
+    <div class="price-row">
+      <div class="price" id="pPrice">€ 4 200</div>
+      <div class="lead">6 semaines Ex Works</div>
+    </div>
+    <div class="specs">
+      <div><b id="sEd">Édition de 12</b>Numérotée + certificat</div>
+      <div><b>Pearl River Delta</b>Fabrication semi-industrielle</div>
+      <div><b>EUR · USD · HKD</b>Devis multi-devises</div>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="openInquiry()">Réserver cette édition</button>
+      <button class="btn btn-ghost" onclick="waLink()">WhatsApp ↗</button>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== RAIL ====================== -->
+<section class="rail-wrap">
+  <div class="rail-head">
+    <h3>La collection</h3>
+    <span>15 pièces · 2 400 – 8 200 €</span>
+  </div>
+  <div class="rail" id="rail"></div>
+</section>
+
+<div class="payband">
+  <span>Acquisition&nbsp;: <b>Virement</b> · <b>Carte (Stripe)</b> · <b>Stablecoin USDC</b></span>
+  <span>Sans frais de retour · <b>Zéro rétrofacturation</b> sur règlement on-chain</span>
+  <span>Programme <b>Trade −30%</b> sur dossier</span>
+</div>
+
+<!-- ====================== MODAL ====================== -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <button class="x" onclick="closeInquiry()">✕</button>
+    <h3>Réserver une pièce</h3>
+    <p id="modalSub">Dragon — Édition de 12 · € 4 200</p>
+    <label>Nom</label><input type="text" placeholder="Votre nom">
+    <label>Email ou WhatsApp</label><input type="text" placeholder="Comment vous joindre">
+    <label>Votre projet</label><textarea rows="3" placeholder="Résidentiel, hospitality, contract…"></textarea>
+    <button class="btn btn-primary" onclick="alert('Démo — branchez Formspree ou WhatsApp ici.');closeInquiry()">Envoyer la demande</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DONNÉES — 1 objet par pièce. Remplacez `art` par <img src>
+   pointant vers vos PNG détourés (voir instructions Claude Code).
+   ============================================================ */
+const ART = {
+  chair:'<svg viewBox="0 0 200 260"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M55 250 V150 M145 250 V150 M55 150 H145"/><path d="M55 150 Q50 40 100 32 Q150 40 145 150"/><path d="M70 150 V70 M130 150 V70 M70 92 H130 M70 116 H130"/><path d="M40 250 H160" stroke-width="3"/></g></svg>',
+  bench:'<svg viewBox="0 0 260 200"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="30" y="95" width="200" height="55" rx="14"/><path d="M45 150 V185 M215 150 V185"/><path d="M30 110 Q30 60 70 60 H190 Q230 60 230 110"/><path d="M70 95 V62 M130 95 V60 M190 95 V62"/></g></svg>',
+  stool:'<svg viewBox="0 0 160 260"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><ellipse cx="80" cy="60" rx="42" ry="14"/><path d="M52 64 V230 M108 64 V230"/><path d="M52 150 H108 M44 230 H116" stroke-width="3"/></g></svg>',
+  armchair:'<svg viewBox="0 0 220 240"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M40 230 V150 M180 230 V150"/><rect x="40" y="120" width="140" height="40" rx="10"/><path d="M40 120 Q35 50 60 48 H160 Q185 50 180 120"/><path d="M28 200 Q20 120 50 120 M192 200 Q200 120 170 120"/></g></svg>',
+  table:'<svg viewBox="0 0 200 220"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><ellipse cx="100" cy="70" rx="80" ry="20"/><path d="M40 78 V190 M160 78 V190 M40 190 H160"/><path d="M40 130 H160"/></g></svg>',
+  pendant:'<svg viewBox="0 0 180 260"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M90 0 V70"/><circle cx="90" cy="70" r="6" fill="currentColor"/><path d="M90 70 L30 150 Q90 200 150 150 Z"/><path d="M55 150 H125"/></g></svg>'
+};
+
+const PIECES = [
+  {id:'dragon',name:'Dragon',type:'Chaise chinoiserie',art:'chair',
+    prov:'Hong Kong Bankers Club · Dragon Room · 2021',situTag:'En situ — Dragon Room, Bankers Club',
+    story:"Dessinée pour les 2 000 membres du club, la Dragon tient un dîner de quatre heures sans jamais peser. Dossier sculpté à la main, laque profonde, mêmes ateliers que le Wynn Palace.",
+    price:'4 200',ed:12,rem:4,
+    finishes:[['Laque vermillon','#C43E2A'],['Bronze antique','#8a6f3e'],['Chêne fumé','#3b3026'],['Noir profond','#15130f']]},
+  {id:'treasury',name:'Treasury',type:'Banquette velours',art:'bench',
+    prov:'The Treasury · Bankers Club · 2021',situTag:'En situ — The Treasury, Bankers Club',
+    story:"Née dans la salle des coffres reconvertie en salon privé. Velours dense, piètement bronze, assise pensée pour une conversation longue.",
+    price:'8 200',ed:8,rem:5,
+    finishes:[['Velours bordeaux','#6e2330'],['Velours fumé','#4a4438'],['Velours nuit','#1d2230'],['Cognac','#8a5a32']]},
+  {id:'chairman',name:'Chairman',type:'Tabouret de bar',art:'stool',
+    prov:"Chairman's Club · Wynn Palace Macau · 2024",situTag:"En situ — Chairman's Club, Wynn Palace",
+    story:"Conçu pour The Bar du casino le plus prestigieux d'Asie. Hauteur de comptoir, repose-pieds laiton, assise tournante silencieuse.",
+    price:'2 400',ed:24,rem:18,
+    finishes:[['Laiton brossé','#b89455'],['Cuir noir','#16140f'],['Cuir cognac','#8a5a32'],['Vert impérial','#234034']]},
+  {id:'alcove',name:'Alcove',type:'Fauteuil de lecture',art:'armchair',
+    prov:'The Library · Hong Kong Club · 2022',situTag:'En situ — The Library, Hong Kong Club',
+    story:"Pour la bibliothèque du plus ancien club privé de Hong Kong (1846). Dossier enveloppant, accoudoirs cuir, structure qui isole le bruit.",
+    price:'5 800',ed:12,rem:7,
+    finishes:[['Cuir cognac','#8a5a32'],['Laine anthracite','#34322c'],['Velours vert','#243f30'],['Ivoire','#cdbfa6']]},
+  {id:'xvi',name:'XVI',type:"Table d'appoint",art:'table',
+    prov:'Appartement Paris XVI · Salon · 2023',situTag:'En situ — Appartement Paris XVI',
+    story:"Issue d'un appartement haussmannien de 340 m². Plateau bronze patiné, fût tourné par des artisans italiens et français.",
+    price:'3 400',ed:20,rem:14,
+    finishes:[['Bronze patiné','#8a6f3e'],['Marbre vert','#2e4138'],['Travertin','#cdbfa6'],['Noyer','#3b2a1d']]},
+  {id:'forms',name:'Forms',type:'Suspension sculpturale',art:'pendant',
+    prov:'Forms Showroom · TEFAF Maastricht · 2023',situTag:'En situ — TEFAF Maastricht',
+    story:"Présentée à la foire d'art et de design la plus prestigieuse au monde. Diffuseur albâtre, structure laiton, lumière chaude tamisée.",
+    price:'6 400',ed:10,rem:6,
+    finishes:[['Albâtre / laiton','#cdb288'],['Verre fumé','#4a4438'],['Bronze','#8a6f3e'],['Opale','#cdbfa6']]}
+];
+
+let current=PIECES[0], view='situ';
+
+/* ---- render piece into viewer ---- */
+function paintArt(){
+  const color = current.finishes[activeFinish] ? current.finishes[activeFinish][1] : '#B8945F';
+  const el=document.getElementById('pieceArt');
+  el.innerHTML=ART[current.art];
+  el.style.color=color;
+}
+let activeFinish=0;
+
+function loadPiece(p){
+  current=p; activeFinish=0;
+  document.getElementById('pType').textContent=p.type;
+  document.getElementById('pName').textContent=p.name;
+  document.getElementById('pProv').textContent=p.prov;
+  document.getElementById('pStory').textContent=p.story;
+  document.getElementById('pPrice').textContent='€ '+p.price;
+  document.getElementById('sEd').textContent='Édition de '+p.ed;
+  document.getElementById('edRemain').textContent='N° '+String(p.ed-p.rem+1).padStart(2,'0')+' / '+p.ed;
+  document.getElementById('stageTag').textContent=p.situTag;
+  document.getElementById('modalSub').textContent=p.name+' — Édition de '+p.ed+' · € '+p.price;
+  // finishes
+  const fc=document.getElementById('finishes'); fc.innerHTML='';
+  p.finishes.forEach((f,i)=>{
+    const s=document.createElement('div');
+    s.className='swatch'+(i===0?' active':'');
+    s.style.background=f[1];
+    s.innerHTML='<span>'+f[0]+'</span>';
+    s.onclick=()=>{activeFinish=i;document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));s.classList.add('active');paintArt();};
+    fc.appendChild(s);
+  });
+  paintArt();
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.id===p.id));
+}
+
+/* ---- view toggle ---- */
+function setView(v){
+  view=v;
+  document.getElementById('sceneSitu').classList.toggle('hidden',v!=='situ');
+  document.getElementById('sceneIso').classList.toggle('hidden',v!=='iso');
+  document.getElementById('stageTag').classList.toggle('show',v==='situ');
+  document.querySelectorAll('.stage-controls button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+}
+
+/* ---- rail ---- */
+const rail=document.getElementById('rail');
+PIECES.forEach(p=>{
+  const c=document.createElement('div');
+  c.className='chip';c.dataset.id=p.id;
+  c.innerHTML='<div class="mini" style="color:'+p.finishes[0][1]+'">'+ART[p.art]+'</div>'+
+    '<h4>'+p.name+'</h4><p>'+p.type+'</p><div class="cp">€ '+p.price+'</div>';
+  c.onclick=()=>{loadPiece(p);setView('situ');document.querySelector('.viewer').scrollIntoView({behavior:'smooth'});};
+  rail.appendChild(c);
+});
+
+/* ---- inquiry + whatsapp ---- */
+function openInquiry(){document.getElementById('modal').classList.add('open')}
+function closeInquiry(){document.getElementById('modal').classList.remove('open')}
+function waLink(){window.open('https://wa.me/0000000000?text='+encodeURIComponent('Bonjour, je suis intéressé par la pièce "'+current.name+'" ('+current.type+', € '+current.price+').'),'_blank')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeInquiry()});
+
+loadPiece(PIECES[0]);
+</script>
+</body>
+</html>
