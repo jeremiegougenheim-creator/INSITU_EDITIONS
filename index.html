@@ -1558,14 +1558,70 @@ body::before {
 </section>
 
 <!-- CEO TABLE TEASER -->
-<section class="ceo-teaser reveal" id="ceo-table" style="background:var(--black);color:var(--paper);padding:96px 80px;text-align:center;">
-  <div class="section-label" style="color:var(--bronze,#b08d57);">A world first</div>
-  <h2 class="collection-title" style="max-width:18ch;margin:16px auto 0;">CEO Table.<br><em>Rises with you.</em></h2>
-  <p style="max-width:60ch;margin:28px auto 0;opacity:0.82;line-height:1.7;">
-    The first motorized sit-to-stand desk designed by an architect of luxury private clubs and residences. Three memorized heights. Silent rise. Engineered for those who refuse to choose between their back and the aesthetics of their office. Photos coming soon.
-  </p>
-  <div style="margin-top:36px;">
-    <a href="mailto:editions@insitueditions.com?subject=CEO%20Table%20—%20early%20access" class="btn btn-light">Inquire for early access</a>
+<style>
+  #ceo-table {
+    display: flex;
+    align-items: stretch;
+    background: var(--black);
+    color: var(--paper);
+    padding: 0;
+    text-align: left;
+  }
+  #ceo-table .ceo-media {
+    position: relative;
+    flex: 1 1 50%;
+    min-height: 560px;
+    overflow: hidden;
+  }
+  #ceo-table .ceo-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #ceo-table .ceo-badge {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    padding: 8px 14px;
+    background: rgba(10,10,8,0.7);
+    border: 1px solid var(--bronze,#b08d57);
+    color: #f7f2e6;
+    opacity: 1;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    font-variant: small-caps;
+    text-transform: lowercase;
+    line-height: 1;
+  }
+  #ceo-table .ceo-badge span { opacity: 0.55; }
+  #ceo-table .ceo-content {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 96px 80px;
+  }
+  @media (max-width: 860px) {
+    #ceo-table { flex-direction: column; }
+    #ceo-table .ceo-media { flex: 1 1 auto; min-height: 320px; width: 100%; }
+    #ceo-table .ceo-content { padding: 64px 32px; }
+  }
+</style>
+<section class="ceo-teaser reveal" id="ceo-table">
+  <div class="ceo-media">
+    <img src="https://www.modernfurniture.com.au/cdn/shop/files/N603-20250107_2_Right_-1000_29e4ccc8-41a1-4de5-8cb4-86af3ff24f89.jpg?v=1779204382" alt="CEO Table — reference image">
+    <div class="ceo-badge"><span>Reference image · Real photos coming soon</span></div>
+  </div>
+  <div class="ceo-content">
+    <div class="section-label" style="color:var(--bronze,#b08d57);">A world first</div>
+    <h2 class="collection-title" style="max-width:18ch;margin:16px 0 0;">CEO Table.<br><em>Rises with you.</em></h2>
+    <p style="max-width:60ch;margin:28px 0 0;opacity:0.82;line-height:1.7;">
+      The first motorized sit-to-stand desk designed by an architect of luxury private clubs and residences. Three memorized heights. Silent rise. Engineered for those who refuse to choose between their back and the aesthetics of their office. Photos coming soon.
+    </p>
+    <div style="margin-top:36px;">
+      <a href="mailto:editions@insitueditions.com?subject=CEO%20Table%20—%20early%20access" class="btn btn-light">Inquire for early access</a>
+    </div>
   </div>
 </section>
 
