@@ -484,8 +484,8 @@ body::before {
 
 .products {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 64px 40px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px 20px;
 }
 
 .product { cursor: crosshair; /* designer cursor */ 
@@ -498,16 +498,12 @@ body::before {
 
 .product-image {
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/5;
   background: var(--paper);
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   position: relative;
   overflow: hidden;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 750px;
 }
 
 .product-image svg,
@@ -550,6 +546,86 @@ body::before {
   font-weight: 500;
   z-index: 2;
   backdrop-filter: blur(8px);
+}
+
+/* === BADGES PROVENANCE / EXCLUSIVITÉ === */
+.product-badge-prov,
+.product-badge-excl {
+  position: absolute;
+  top: 10px; left: 10px;
+  display: flex; align-items: center; gap: 6px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 100px;
+  padding: 5px 10px 5px 8px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.product-badge-prov {
+  background: rgba(10,10,8,0.6);
+  color: rgba(245,242,236,0.9);
+}
+.product-badge-excl {
+  background: rgba(10,10,8,0.72);
+  color: #B8945F;
+  border: 0.5px solid rgba(184,148,95,0.45);
+  padding: 6px 13px 6px 10px;
+}
+.product-badge-prov .bdot,
+.product-badge-excl .bdot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.product-badge-prov .bdot { background: #7a3e35; }
+.product-badge-excl .bdot { background: #B8945F; }
+
+/* === CEO TABLE CARD — pleine largeur === */
+.product-link-ceo { grid-column: 1 / -1; }
+.product-ceo {
+  display: flex;
+  border: 1px solid #B8945F;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
+}
+.product-ceo:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(184,148,95,0.12); }
+.product-ceo .product-image {
+  flex: 0 0 62%;
+  aspect-ratio: unset;
+  min-height: 360px;
+  margin-bottom: 0;
+}
+.product-ceo .product-info {
+  flex: 1;
+  padding: 48px 40px;
+  border-left: 1px solid rgba(184,148,95,0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  align-items: flex-start;
+}
+.product-ceo .product-name {
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.product-ceo .product-meta {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.product-ceo .product-price {
+  font-size: 32px;
+  color: #B8945F;
+  margin-top: 0;
 }
 
 .product-info {
@@ -1355,8 +1431,8 @@ body::before {
   .lang-switch { display: none; /* cleaned */ gap: 2px; }
   .lang-switch button { padding: 3px 4px; }
 }
-@media (max-width: 1024px) {
-  .products { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 1100px) {
+  .products { grid-template-columns: repeat(3, 1fr); gap: 24px 16px; }
   .footer-grid { grid-template-columns: 2fr 1fr 1fr; }
 }
 
@@ -1375,7 +1451,17 @@ body::before {
   .collection { padding: 80px 24px; }
   .collection-header { grid-template-columns: 1fr; }
   .collection-intro { justify-self: start; }
-  .products { grid-template-columns: 1fr; gap: 48px; }
+  .products { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .product-link-ceo { grid-column: 1 / -1; }
+  .product-ceo { flex-direction: column; }
+  .product-ceo .product-image { flex: none; width: 100%; min-height: 0; aspect-ratio: 16/9; }
+  .product-ceo .product-info { border-left: none; border-top: 1px solid rgba(184,148,95,0.3); padding: 20px 16px; gap: 4px; }
+  .product-ceo .product-name { font-size: 26px; }
+  .product-ceo .product-price { font-size: 22px; }
+  .product-name { font-size: 15px !important; }
+  .product-meta { font-size: 10px !important; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .product-price { font-size: 13px !important; margin-top: 5px !important; white-space: nowrap; }
+  .product-info { gap: 4px; flex-wrap: wrap; }
   .lead-banner { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 48px 24px; }
   .origins { padding: 80px 24px; }
   .origins-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1681,155 +1767,237 @@ body::before {
   </div>
 
   <div class="products">
-    <!-- № 01 -->
-    <a href="product-sideboard-01.html" class="product-link"><article class="product reveal">
+
+    <!-- CEO TABLE — Exclusivité, pleine largeur -->
+    <a href="product-ceo-table.html" class="product-link product-link-ceo"><article class="product product-ceo reveal">
       <div class="product-image">
-<img src="img/product-treasury.jpg" alt="Sideboard 01" class="img-cover">
+        <img src="img/ceo-table-context.jpg" alt="CEO Table — In Situ Editions" class="img-cover">
+        <div class="product-badge-excl"><span class="bdot"></span>Exclusivité</div>
       </div>
       <div class="product-info">
-        <div>
-          <div class="product-origin">№ 01</div>
-          <h3 class="product-name">Sideboard 01</h3>
-          <div class="product-meta">Sideboard · 200 × 44 × 89 cm · Hand-carved honeycomb-texture oak, four doors</div>
-        </div>
-        <div class="product-price">On request</div>
+        <div class="product-origin" style="color:#B8945F;letter-spacing:0.2em;">Executive desk</div>
+        <h3 class="product-name">CEO Table</h3>
+        <div class="product-meta">Motorized sit-to-stand · Bespoke dimensions</div>
+        <div class="product-price"><small>From</small>€ 8,900</div>
       </div>
     </article></a>
 
-    <!-- № 02 -->
-    <a href="product-chair-01.html" class="product-link"><article class="product reveal">
-      <div class="product-image">
-<img src="img/product-alcove.jpg" alt="Chair 01" class="img-cover">
-      </div>
-      <div class="product-info">
-        <div>
-          <div class="product-origin">№ 02</div>
-          <h3 class="product-name">Chair 01</h3>
-          <div class="product-meta">Dining chair · 62 × 58 × 78 cm, seat 47 · Oak frame, black rope weave, grey cushions</div>
-        </div>
-        <div class="product-price">On request</div>
-      </div>
-    </article></a>
-
-    <!-- № 03 -->
+    <!-- PROVENANCE: Dragon -->
     <a href="product-dragon.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-dragon.jpg" alt="Chair 02" class="img-cover">
+        <img src="img/product-dragon.jpg" alt="Dragon" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>Dragon Room · Bankers Club</div>
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 03</div>
-          <h3 class="product-name">Chair 02</h3>
-          <div class="product-meta">Dining chair · 63 × 65 × 77 cm, seat 46 · Green velvet tub, gold botanical print, brass base</div>
+          <h3 class="product-name">Dragon</h3>
+          <div class="product-meta">Chinoiserie lounge chair</div>
         </div>
-        <div class="product-price">On request</div>
+        <div class="product-price"><small>From</small>€ 4,200</div>
       </div>
     </article></a>
 
-    <!-- № 04 -->
-    <a href="product-high-chair-01.html" class="product-link"><article class="product reveal">
+    <!-- PROVENANCE: Treasury -->
+    <a href="product-treasury.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-chairman.jpg" alt="High Chair 01" class="img-cover">
+        <img src="img/product-treasury.jpg" alt="Treasury" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>Treasury · Bankers Club</div>
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 04</div>
-          <h3 class="product-name">High Chair 01</h3>
-          <div class="product-meta">Bar stool · 54 × 51 × 89 cm, seat 64 · Clean oak frame, linen-beige upholstery</div>
+          <h3 class="product-name">Treasury</h3>
+          <div class="product-meta">Velvet banquette</div>
+        </div>
+        <div class="product-price"><small>From</small>€ 8,200</div>
+      </div>
+    </article></a>
+
+    <!-- PROVENANCE: Chairman -->
+    <a href="product-chairman.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/product-chairman.jpg" alt="Chairman" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>Chairman's Club · Wynn Palace</div>
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Chairman</h3>
+          <div class="product-meta">Bar stool</div>
+        </div>
+        <div class="product-price"><small>From</small>€ 2,400</div>
+      </div>
+    </article></a>
+
+    <!-- PROVENANCE: Alcove -->
+    <a href="product-alcove.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/product-alcove.jpg" alt="Alcove" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>The Library · Hong Kong Club</div>
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Alcove</h3>
+          <div class="product-meta">Reading armchair</div>
+        </div>
+        <div class="product-price"><small>From</small>€ 5,800</div>
+      </div>
+    </article></a>
+
+    <!-- PROVENANCE: XVI -->
+    <a href="product-xvi.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/product-xvi.jpg" alt="XVI" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>Paris XVI · Haussmann</div>
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">XVI</h3>
+          <div class="product-meta">Side table</div>
+        </div>
+        <div class="product-price"><small>From</small>€ 3,400</div>
+      </div>
+    </article></a>
+
+    <!-- PROVENANCE: Forms -->
+    <a href="product-forms.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/product-forms.jpg" alt="Forms" class="img-cover">
+        <div class="product-badge-prov"><span class="bdot"></span>Forms Showroom · TEFAF</div>
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Forms</h3>
+          <div class="product-meta">Sculptural pendant</div>
+        </div>
+        <div class="product-price"><small>From</small>€ 6,400</div>
+      </div>
+    </article></a>
+
+    <!-- CATALOGUE: Chair 01 -->
+    <a href="product-chair-01.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/bankers-lobby.jpg" alt="Chair 01" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Chair 01</h3>
+          <div class="product-meta">Dining chair</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 05 -->
+    <!-- CATALOGUE: Chair 02 -->
+    <a href="product-chair-02.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/bankers-lounge.jpg" alt="Chair 02" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Chair 02</h3>
+          <div class="product-meta">Dining chair</div>
+        </div>
+        <div class="product-price">On request</div>
+      </div>
+    </article></a>
+
+    <!-- CATALOGUE: Lounge Chair 01 -->
     <a href="product-lounge-chair-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-alcove.jpg" alt="Lounge Chair 01" class="img-cover">
+        <img src="img/paris-living.jpg" alt="Lounge Chair 01" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 05</div>
           <h3 class="product-name">Lounge Chair 01</h3>
-          <div class="product-meta">Lounge · 74 × 103 × 82 cm, seat 38 · Dark-wood sculptural wedge base, tiger-stripe fabric</div>
+          <div class="product-meta">Lounge chair</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 06 -->
+    <!-- CATALOGUE: Lounge Chair 02 -->
     <a href="product-lounge-chair-02.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-treasury.jpg" alt="Lounge Chair 02" class="img-cover">
+        <img src="img/paris-double.jpg" alt="Lounge Chair 02" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 06</div>
           <h3 class="product-name">Lounge Chair 02</h3>
-          <div class="product-meta">Lounge · 113 × 77 × 83 cm, seat 45 · Green velvet egg shape, dark-wood legs</div>
+          <div class="product-meta">Lounge chair</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 07 -->
+    <!-- CATALOGUE: Coffee Table 01 -->
     <a href="product-coffee-table-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-xvi.jpg" alt="Coffee Table 01" class="img-cover">
+        <img src="img/clarence-dining.jpg" alt="Coffee Table 01" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 07</div>
           <h3 class="product-name">Coffee Table 01</h3>
-          <div class="product-meta">Coffee table · 163 × 94 × 40 cm · Black-lacquer organic shape, cylindrical legs</div>
+          <div class="product-meta">Coffee table</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 08 -->
+    <!-- CATALOGUE: Coffee Table 02 -->
     <a href="product-coffee-table-02.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-forms.jpg" alt="Coffee Table 02" class="img-cover">
+        <img src="img/tefaf-dining.jpg" alt="Coffee Table 02" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 08</div>
           <h3 class="product-name">Coffee Table 02</h3>
-          <div class="product-meta">Coffee table · Ø 135 × 37 cm · Travertine top, walnut pedestal, central wood inlay</div>
+          <div class="product-meta">Coffee table</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 09 -->
+    <!-- CATALOGUE: Dining Table 01 -->
     <a href="product-dining-table-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-xvi.jpg" alt="Dining Table 01" class="img-cover">
+        <img src="img/forms-meeting.jpg" alt="Dining Table 01" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 09</div>
           <h3 class="product-name">Dining Table 01</h3>
-          <div class="product-meta">Dining table · Ø 215 × 74 cm · Travertine top, bronze fluted pedestal, lazy susan</div>
+          <div class="product-meta">Dining table</div>
         </div>
         <div class="product-price">On request</div>
       </div>
     </article></a>
 
-    <!-- № 10 — CEO TABLE (hero piece, photos coming soon) -->
-    <a href="product-ceo-table.html" class="product-link"><article class="product reveal">
+    <!-- CATALOGUE: High Chair 01 -->
+    <a href="product-high-chair-01.html" class="product-link"><article class="product reveal">
       <div class="product-image">
-<img src="img/product-chairman.jpg" alt="CEO Table — coming soon" class="img-cover">
+        <img src="img/forms-lounge.jpg" alt="High Chair 01" class="img-cover">
       </div>
       <div class="product-info">
         <div>
-          <div class="product-origin">№ 10 · Hero piece</div>
-          <h3 class="product-name">CEO Table</h3>
-          <div class="product-meta">Executive desk · Dimensions to be confirmed · Motorized sit-to-stand. Photos coming soon.</div>
+          <h3 class="product-name">High Chair 01</h3>
+          <div class="product-meta">Bar stool</div>
         </div>
-        <div class="product-price">Coming soon</div>
+        <div class="product-price">On request</div>
       </div>
     </article></a>
+
+    <!-- CATALOGUE: Sideboard 01 -->
+    <a href="product-sideboard-01.html" class="product-link"><article class="product reveal">
+      <div class="product-image">
+        <img src="img/bankers-reception.jpg" alt="Sideboard 01" class="img-cover">
+      </div>
+      <div class="product-info">
+        <div>
+          <h3 class="product-name">Sideboard 01</h3>
+          <div class="product-meta">Sideboard</div>
+        </div>
+        <div class="product-price">On request</div>
+      </div>
+    </article></a>
+
   </div>
 
   <div class="collection-cta" style="display:none;">
