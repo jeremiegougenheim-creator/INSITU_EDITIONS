@@ -1376,7 +1376,7 @@ body::before {
   .collection-header { grid-template-columns: 1fr; }
   .collection-intro { justify-self: start; }
   .products { grid-template-columns: 1fr; gap: 48px; }
-  .lead-banner { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+  .lead-banner { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 48px 24px; }
   .origins { padding: 80px 24px; }
   .origins-grid { grid-template-columns: 1fr; gap: 48px; }
   .projects { padding: 80px 0 80px 24px; }
@@ -1394,6 +1394,7 @@ body::before {
   .footer { padding: 60px 24px 24px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
   .footer-bottom { flex-direction: column; gap: 16px; }
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
 
 .product-link { text-decoration: none; color: inherit; display: block; transition: transform 0.4s ease, opacity 0.4s ease; }
