@@ -19,7 +19,7 @@
   --accent-light: #a8896a;
   --line: #c9c1b3;
   --muted: #6b6357;
-  --vermilion: #7a3e35;
+  --gold: #B8945F;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -197,172 +197,224 @@ body::before {
 
 .crumb a:hover { color: var(--accent); }
 
-.crumb span {
-  margin: 0 12px;
-  color: var(--line);
-}
+.crumb span { margin: 0 12px; color: var(--line); }
 
-/* === PRODUCT TOP === */
-.product-top {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 0;
-  background: var(--paper);
-  min-height: 80vh;
-  padding-bottom: 80px;
-}
-
-/* === GALLERY === */
-.gallery {
-  position: relative;
-  background: var(--paper-warm);
-  padding: 32px 32px 32px 48px;
-}
-
-.gallery-main {
-  position: relative;
-  aspect-ratio: 4/5;
-  background: var(--paper);
-  margin-bottom: 16px;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  cursor: zoom-in;
-  max-height: 750px;
-}
-
-.gallery-main svg {
+/* === IMMERSIVE GALLERY (full-width hero) === */
+.immersive-gallery {
   width: 100%;
-  height: 100%;
-  display: block;
-  transition: opacity 0.5s;
+  position: relative;
 }
 
-/* === GALLERY CONTEXT TOGGLE (En situ / Isolé) === */
-.gallery-layer {
-  position: absolute;
-  inset: 0;
+.ig-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ig-track::-webkit-scrollbar { display: none; }
+
+.ig-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ig-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.9s cubic-bezier(.22,.61,.36,1);
-  pointer-events: none;
-}
-.gallery-main[data-mode="insitu"] .gallery-layer-insitu { opacity: 1; }
-.gallery-main[data-mode="isole"]  .gallery-layer-isole  { opacity: 1; }
-
-.gallery-toggle {
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 6;
-  display: inline-flex;
-  gap: 2px;
-  padding: 4px;
-  background: rgba(10, 10, 8, 0.55);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(184, 148, 95, 0.25);
-  border-radius: 100px;
-}
-.gallery-toggle button {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: rgba(245, 240, 232, 0.85);
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 8px 18px;
-  border-radius: 100px;
-  cursor: pointer;
-  transition: background-color 0.4s, color 0.4s;
-}
-.gallery-toggle button.active {
-  background: var(--ivoire, #F5F0E8);
-  color: var(--noir, #0A0A08);
-}
-
-.gallery-main .view-360 {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(26, 24, 21, 0.85);
-  color: var(--paper);
-  padding: 10px 16px;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 500;
-  border: 1px solid var(--accent);
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 5;
-}
-
-.gallery-main .view-360::before {
-  content: '◐';
-  font-size: 14px;
-  color: var(--accent-light);
-}
-
-.gallery-thumbs {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-}
-
-.gallery-thumb {
-  aspect-ratio: 1;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s;
-}
-
-.gallery-thumb svg {
-  width: 100%;
-  height: 100%;
   display: block;
 }
 
-.gallery-thumb.active {
-  border: 1px solid var(--accent);
-  box-shadow: 0 0 0 2px var(--accent);
+.ig-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(8,8,0,0.92) 0%,
+    rgba(8,8,0,0.0) 55%);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.gallery-thumb:hover { border-color: var(--accent); }
-
-.gallery-thumb-label {
+.ig-overlay {
   position: absolute;
-  bottom: 4px;
-  left: 6px;
-  font-size: 8px;
-  letter-spacing: 0.16em;
+  bottom: 0; left: 0; right: 0;
+  padding: 28px 48px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  z-index: 3;
+}
+.ig-meta { flex: 1; min-width: 0; }
+.ig-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.ig-title {
+  font-family: Georgia, serif;
+  font-size: 44px;
+  font-weight: 400;
+  color: #f5f2ec;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.ig-type {
+  font-size: 12px;
+  color: rgba(245,242,236,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* World-first panel */
+.ig-panel {
+  background: rgba(20,19,15,0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(184,148,95,0.35);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 240px;
+  max-width: 300px;
+  flex-shrink: 0;
+  z-index: 4;
+}
+.ig-panel-headline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #f5f2ec;
+  font-size: 12px;
+  font-weight: 500;
+}
+.ig-panel-headline svg { color: var(--gold); flex-shrink: 0; }
+.ig-panel-divider {
+  border: none;
+  border-top: 1px dashed rgba(184,148,95,0.4);
+  margin: 10px 0;
+}
+.ig-panel-body {
+  font-size: 11px;
+  color: rgba(245,242,236,0.7);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.ig-panel-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.ig-panel-tag svg { color: var(--gold); flex-shrink: 0; }
+
+/* Exclusivité badge */
+.ig-badge-excl {
+  position: absolute;
+  top: 16px; left: 16px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px 6px 10px;
+  background: rgba(10,10,8,0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(184,148,95,0.45);
+  border-radius: 100px;
+  pointer-events: none;
+}
+.ig-badge-excl-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.ig-badge-excl-text {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
   font-weight: 500;
 }
 
-/* === INFO === */
-.info {
-  padding: 32px 48px 32px 64px;
-  display: flex;
-  flex-direction: column;
+/* Fullscreen button */
+.ig-fs-btn {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 4;
+  width: 38px; height: 38px;
+  background: rgba(10,10,8,0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  color: #f5f2ec;
+  display: flex; align-items: center; justify-content: center;
 }
+.ig-fs-btn svg { width: 18px; height: 18px; pointer-events: none; }
+
+/* Fullscreen overlay */
+.ig-fs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: #0A0A08;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ig-fs-overlay[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .ig-fs-overlay {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .ig-fs-overlay.is-open { opacity: 1; transform: scale(1); }
+}
+.ig-fs-img {
+  max-width: 90vw; max-height: 90vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.ig-fs-close {
+  position: absolute;
+  top: 24px; right: 28px;
+  background: transparent; border: none;
+  color: rgba(245,242,236,0.7);
+  font-size: 36px; line-height: 1;
+  cursor: pointer; padding: 8px;
+}
+.ig-fs-close:hover { color: #f5f2ec; }
+
+/* === INFO SECTION (below gallery) === */
+.info-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 80px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.info-left {}
 
 .info-origin {
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--gold);
   margin-bottom: 16px;
   font-weight: 500;
   display: flex;
@@ -374,7 +426,7 @@ body::before {
   content: '';
   width: 32px;
   height: 1px;
-  background: var(--accent);
+  background: var(--gold);
 }
 
 .info-name {
@@ -393,6 +445,16 @@ body::before {
   font-weight: 300;
   color: var(--muted);
   margin-bottom: 32px;
+}
+
+.info-positioning {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--black);
+  font-weight: 300;
+  margin-bottom: 32px;
+  padding-left: 16px;
+  border-left: 2px solid var(--gold);
 }
 
 .info-price-row {
@@ -423,20 +485,54 @@ body::before {
   font-weight: 500;
 }
 
-.info-vat {
-  font-size: 11px;
-  letter-spacing: 0.1em;
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.btn-reserve {
+  flex: 1;
+  padding: 18px 24px;
+  background: var(--black);
+  color: var(--paper);
+  border: 1px solid var(--black);
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.btn-reserve:hover { background: var(--gold); border-color: var(--gold); }
+
+.btn-tertiary {
   color: var(--muted);
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 10px 0;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 4px;
+  display: block;
 }
+.btn-tertiary:hover { color: var(--accent); text-decoration-color: var(--accent); }
 
-/* === CONFIGURATOR === */
-.config {
-  margin-bottom: 32px;
-}
+.samples { margin-bottom: 32px; }
 
-.config-group {
-  margin-bottom: 28px;
-}
+/* === INFO RIGHT COLUMN === */
+.info-right {}
+
+.config { margin-bottom: 32px; }
 
 .config-label {
   font-size: 11px;
@@ -451,7 +547,6 @@ body::before {
 
 .config-label .selected {
   color: var(--black);
-  font-style: normal;
   font-family: 'Cormorant Garamond', serif;
   font-size: 14px;
   letter-spacing: 0;
@@ -459,49 +554,6 @@ body::before {
   font-style: italic;
 }
 
-.config-swatches {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.swatch {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.swatch::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  transition: border-color 0.3s;
-}
-
-.swatch.active::after {
-  border-color: var(--accent);
-}
-
-.swatch:hover::after { border-color: var(--accent-light); }
-
-/* Specific swatches */
-.swatch.vermilion { background: linear-gradient(135deg, #8a4a3e, #5a2820); }
-.swatch.midnight { background: linear-gradient(135deg, #2a3540, #161b22); }
-.swatch.bone { background: linear-gradient(135deg, #e8dec9, #c9bfa6); }
-.swatch.olive { background: linear-gradient(135deg, #4a4f3a, #2c2f1f); }
-.swatch.cognac { background: linear-gradient(135deg, #8b5a3c, #5d3a23); }
-
-.swatch.oak-natural { background: linear-gradient(135deg, #b08e64, #8b6f47); }
-.swatch.oak-dark { background: linear-gradient(135deg, #4a3826, #2a1f15); }
-.swatch.oak-lacquer { background: linear-gradient(135deg, #2a1f15, #0e0a06); box-shadow: inset 0 0 12px rgba(255,255,255,0.2); }
-
-/* === LEAD TIME PICKER === */
 .delivery-picker {
   margin-bottom: 32px;
   padding: 20px;
@@ -518,153 +570,13 @@ body::before {
   font-weight: 500;
 }
 
-.delivery-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.delivery-opt {
-  padding: 14px 12px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.3s;
-  font-family: 'Inter Tight', sans-serif;
-}
-
-.delivery-opt.active {
-  border-color: var(--accent);
-  background: var(--paper);
-  box-shadow: 0 0 0 1px var(--accent);
-}
-
-.delivery-opt:hover { border-color: var(--accent-light); }
-
-.delivery-opt-name {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--black);
-  letter-spacing: 0.04em;
-  margin-bottom: 4px;
-}
-
-.delivery-opt-time {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  color: var(--accent-deep);
-  font-style: italic;
-  margin-bottom: 4px;
-}
-
-.delivery-opt-extra {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
-.delivery-eta {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  font-size: 12px;
-  color: var(--muted);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.delivery-eta strong {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--accent-deep);
-  font-size: 15px;
-}
-
-/* === ACTIONS === */
-.actions {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.btn {
-  flex: 1;
-  padding: 18px 32px;
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border: 1px solid;
-  cursor: pointer;
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.7, 0, 0.3, 1);
-  text-align: center;
-  background: transparent;
-}
-
-.btn-primary {
-  background: var(--black);
-  color: var(--paper);
-  border-color: var(--black);
-}
-
-.btn-primary:hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
-}
-
-.btn-secondary {
-  color: var(--black);
-  border-color: var(--black);
-}
-
-.btn-secondary:hover {
-  background: var(--black);
-  color: var(--paper);
-}
-
-.btn-tertiary {
-  color: var(--muted);
-  border: none;
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-underline-offset: 4px;
-  background: transparent;
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 10px 0;
-  width: 100%;
-  text-align: left;
-  font-family: inherit;
-  font-weight: 500;
-}
-
-.btn-tertiary:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
-.samples {
-  margin-bottom: 32px;
-}
-
-/* === INFO POINTS === */
+/* === ASSURANCES === */
 .assurances {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   padding: 24px 0;
   border-top: 1px solid var(--line);
-}
-
-.assurance {
-  text-align: left;
 }
 
 .assurance-icon {
@@ -772,7 +684,7 @@ body::before {
   font-style: normal;
 }
 
-/* === DIMENSIONS === */
+/* === SPECS === */
 .specs {
   background: var(--paper);
   padding: 80px 80px;
@@ -820,9 +732,7 @@ body::before {
   color: var(--accent);
 }
 
-.specs-list {
-  list-style: none;
-}
+.specs-list { list-style: none; }
 
 .specs-list li {
   display: flex;
@@ -834,10 +744,7 @@ body::before {
 
 .specs-list li:first-child { border-top: 1px solid var(--line); }
 
-.specs-list .label {
-  color: var(--muted);
-  letter-spacing: 0.04em;
-}
+.specs-list .label { color: var(--muted); letter-spacing: 0.04em; }
 
 .specs-list .value {
   color: var(--black);
@@ -863,7 +770,6 @@ body::before {
   border-bottom: 1px solid var(--accent);
   font-weight: 500;
 }
-
 .specs-cta a:hover { color: var(--accent-deep); }
 
 .specs-drawing {
@@ -871,13 +777,6 @@ body::before {
   background: var(--paper-warm);
   border: 1px solid var(--line);
   overflow: hidden;
-  position: relative;
-}
-
-.specs-drawing svg {
-  width: 100%;
-  height: 100%;
-  display: block;
 }
 
 /* === SEEN IN === */
@@ -894,7 +793,7 @@ body::before {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 .seen-header {
@@ -909,7 +808,7 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-light);
+  color: var(--gold);
   margin-bottom: 24px;
   font-weight: 500;
 }
@@ -924,7 +823,7 @@ body::before {
 
 .seen-title em {
   font-style: italic;
-  color: var(--accent-light);
+  color: var(--gold);
 }
 
 .seen-grid {
@@ -943,9 +842,10 @@ body::before {
   border: 1px solid rgba(245,242,236,0.1);
 }
 
-.seen-main svg, .seen-side svg {
-  width: 100%;
-  height: 100%;
+.seen-main img,
+.seen-side img {
+  width: 100%; height: 100%;
+  object-fit: cover;
   display: block;
 }
 
@@ -961,7 +861,7 @@ body::before {
   font-size: 10px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--accent-light);
+  color: var(--gold);
   margin-bottom: 6px;
   font-weight: 500;
 }
@@ -1009,7 +909,6 @@ body::before {
   cursor: pointer;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .rel-card:hover { transform: translateY(-6px); }
 
 .rel-image {
@@ -1022,11 +921,13 @@ body::before {
   position: relative;
 }
 
-.rel-image svg {
-  width: 100%;
-  height: 100%;
+.rel-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.rel-card:hover .rel-image img { transform: scale(1.06); }
 
 .rel-info {
   display: flex;
@@ -1041,10 +942,7 @@ body::before {
   margin-bottom: 4px;
 }
 
-.rel-meta {
-  font-size: 12px;
-  color: var(--muted);
-}
+.rel-meta { font-size: 12px; color: var(--muted); }
 
 .rel-price {
   font-family: 'Cormorant Garamond', serif;
@@ -1088,65 +986,7 @@ body::before {
   margin: 0 16px;
   transition: color 0.3s;
 }
-
 .footer-links a:hover { color: var(--accent); }
-
-/* === STICKY ADD TO CART (Mobile-ish behavior) === */
-
-/* === MEDIUM SCREENS === */
-@media (max-width: 1200px) {
-  .nav-links { gap: 16px; }
-  .nav-links a { font-size: 10px; letter-spacing: 0.08em; }
-  .logo-main { font-size: 18px; letter-spacing: 0.1em; }
-  .logo-tag { font-size: 7px; letter-spacing: 0.2em; }
-  .nav-actions { gap: 12px; }
-  .lang-switch { gap: 2px; }
-  .lang-switch button { padding: 3px 4px; }
-}
-@media (max-width: 1024px) {
-  .product-top { grid-template-columns: 1fr; }
-  .gallery { padding: 24px; }
-  .info { padding: 32px 24px 48px; }
-  .specs-inner { grid-template-columns: 1fr; gap: 48px; }
-  .seen-grid { grid-template-columns: 1fr; }
-  .related-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .nav { padding: 14px 20px; }
-  .nav-links { display: none; }
-  .logo-tag { display: none; }
-  .crumb { padding: 16px 20px; font-size: 10px; }
-  .crumb span { margin: 0 8px; }
-  .info-name { font-size: 48px; }
-  .actions { flex-direction: column; }
-  .assurances { grid-template-columns: 1fr; gap: 20px; }
-  .story { padding: 80px 24px; }
-  .specs { padding: 80px 24px; }
-  .seen-in { padding: 80px 24px; }
-  .related { padding: 80px 24px; }
-  .related-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .related-grid { grid-template-columns: 1fr; }
-  .footer { padding: 48px 24px 24px; }
-}
-
-/* === BTN RESERVE (vermillon) === */
-.btn-reserve {
-  width: 100%;
-  padding: 18px 24px;
-  background: #C43E2A;
-  color: #fff;
-  border: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-.btn-reserve:hover { background: #a8331f; }
-.btn-reserve:active { transform: translateY(1px); }
 
 /* === INQUIRY MODAL === */
 .inquiry-modal {
@@ -1176,10 +1016,8 @@ body::before {
 }
 .inquiry-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 36px;
-  height: 36px;
+  top: 14px; right: 14px;
+  width: 36px; height: 36px;
   background: transparent;
   border: none;
   font-size: 22px;
@@ -1193,7 +1031,7 @@ body::before {
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-deep);
+  color: var(--gold);
   margin-bottom: 10px;
 }
 .inquiry-title {
@@ -1210,7 +1048,6 @@ body::before {
   margin-bottom: 24px;
   line-height: 1.5;
 }
-
 .inquiry-field { margin-bottom: 16px; }
 .inquiry-field label {
   display: block;
@@ -1242,7 +1079,7 @@ body::before {
   width: 100%;
   margin-top: 8px;
   padding: 16px 24px;
-  background: #C43E2A;
+  background: var(--black);
   color: #fff;
   border: none;
   font-family: 'Inter', sans-serif;
@@ -1253,8 +1090,7 @@ body::before {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.inquiry-submit:hover { background: #a8331f; }
-
+.inquiry-submit:hover { background: var(--gold); }
 .inquiry-foot {
   margin-top: 14px;
   font-size: 11px;
@@ -1262,18 +1098,15 @@ body::before {
   text-align: center;
 }
 
-/* === STICKY MOBILE BAR (≤ 879px) === */
+/* === STICKY MOBILE BAR === */
 .sticky-mobile-bar { display: none; }
 
 @media (max-width: 879px) {
   body { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
-
   .sticky-mobile-bar {
     display: flex;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     z-index: 200;
     align-items: center;
     gap: 10px;
@@ -1283,17 +1116,12 @@ body::before {
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid var(--line);
   }
-
   .smb-price {
-    flex: 1;
-    min-width: 0;
+    flex: 1; min-width: 0;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 1.1;
     color: var(--black);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .smb-price small {
     display: block;
@@ -1304,35 +1132,30 @@ body::before {
     color: var(--muted);
     margin-bottom: 2px;
   }
-
   .smb-wa {
     flex: 0 0 auto;
-    width: 48px;
-    height: 48px;
+    width: 48px; height: 48px;
     border-radius: 12px;
     background: #25D366;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    border: none;
-    cursor: pointer;
+    border: none; cursor: pointer;
   }
   .smb-wa svg { width: 24px; height: 24px; fill: #fff; }
-
   .smb-reserve {
     flex: 0 0 auto;
     height: 48px;
     padding: 0 18px;
     border-radius: 12px;
-    background: #C43E2A;
+    background: var(--black);
     color: #fff;
     font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.04em;
-    border: none;
-    cursor: pointer;
+    border: none; cursor: pointer;
     white-space: nowrap;
   }
 }
@@ -1346,9 +1169,7 @@ body::before {
     display: flex !important;
     flex-direction: column;
     position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
+    top: 60px; left: 0; right: 0;
     background: var(--paper);
     padding: 12px 20px 20px;
     gap: 0;
@@ -1361,15 +1182,38 @@ body::before {
   .nav-links.is-open a { display: flex; align-items: center; min-height: 44px; padding: 4px 0; font-size: 13px; }
 }
 
-/* === WAHOU 1 : zoom photo + scroll reveal === */
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .info-section { grid-template-columns: 1fr; gap: 48px; padding: 48px 40px; }
+  .specs-inner { grid-template-columns: 1fr; gap: 48px; }
+  .seen-grid { grid-template-columns: 1fr; }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .logo-tag { display: none; }
+  .crumb { padding: 16px 20px; font-size: 10px; }
+  .crumb span { margin: 0 8px; }
+  .ig-slide { height: 45vh; min-height: 280px; }
+  .ig-overlay { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .ig-panel { min-width: unset; max-width: 100%; width: 100%; }
+  .ig-title { font-size: 28px; }
+  .info-section { padding: 32px 20px 48px; }
+  .info-name { font-size: 48px; }
+  .assurances { grid-template-columns: 1fr; gap: 20px; }
+  .story { padding: 80px 24px; }
+  .specs { padding: 80px 24px; }
+  .seen-in { padding: 80px 24px; }
+  .related { padding: 80px 24px; }
+  .related-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .related-grid { grid-template-columns: 1fr; }
+  .footer { padding: 48px 24px 24px; }
+}
+
+/* === SCROLL REVEAL === */
 @media (prefers-reduced-motion: no-preference) {
-  @media (hover: hover) and (pointer: fine) {
-    .gallery-main .gallery-layer {
-      transition: opacity 0.9s cubic-bezier(.22,.61,.36,1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .gallery-main:hover .gallery-layer { transform: scale(1.05); }
-  }
   .reveal-up {
     opacity: 0;
     transform: translateY(20px);
@@ -1418,143 +1262,107 @@ body::before {
   <a href="index.html#collection">Collection</a><span>/</span>CEO Table
 </div>
 
-<!-- PRODUCT TOP -->
-<section class="product-top">
+<!-- IMMERSIVE GALLERY — pleine largeur, une seule photo -->
+<div class="immersive-gallery" id="ceo-gallery">
+  <div class="ig-track">
 
-  <!-- GALLERY -->
-  <div class="gallery">
-    <div class="gallery-main" data-mode="isole">
-      <img class="gallery-layer gallery-layer-isole" src="img/ceo-table-context.jpg" alt="CEO Table — in-context office view">
+    <div class="ig-slide" data-index="0" data-src="img/ceo-table-context.jpg">
+      <img class="ig-photo" src="img/ceo-table-context.jpg"
+           alt="CEO Table — In Situ Editions" loading="eager">
+      <div class="ig-gradient" aria-hidden="true"></div>
+
+      <!-- Badge Exclusivité -->
+      <div class="ig-badge-excl" aria-hidden="true">
+        <span class="ig-badge-excl-dot"></span>
+        <span class="ig-badge-excl-text">Exclusivité</span>
+      </div>
+
+      <!-- Bouton plein écran -->
+      <button class="ig-fs-btn" aria-label="Voir en plein écran">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/>
+        </svg>
+      </button>
+
+      <!-- Overlay titre + panneau world first -->
+      <div class="ig-overlay">
+        <div class="ig-meta">
+          <div class="ig-eyebrow">A world first</div>
+          <div class="ig-title">CEO Table</div>
+          <div class="ig-type">Motorized executive desk</div>
+        </div>
+
+        <div class="ig-panel">
+          <div class="ig-panel-headline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>A world first</span>
+          </div>
+          <div class="ig-panel-divider"></div>
+          <div class="ig-panel-body">The first motorized sit-to-stand desk designed by an architect of luxury private clubs and residences.</div>
+          <div class="ig-panel-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span>Motorized sit-to-stand · Bespoke</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="gallery-thumbs">
-      <div class="gallery-thumb active">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#ebe6dc"/>
-          <path d="M 20 30 Q 20 15 35 15 L 65 15 Q 80 15 80 30 L 80 70 Q 80 78 73 78 L 27 78 Q 20 78 20 70 Z" fill="#8b6f47"/>
-          <ellipse cx="50" cy="80" rx="28" ry="4" fill="#7a3e35"/>
-        </svg>
-        <div class="gallery-thumb-label">Front</div>
-      </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#3a3128"/>
-          <path d="M 25 35 Q 25 20 40 20 L 65 20 Q 78 20 78 35 L 78 70 Q 78 76 72 76 L 31 76 Q 25 76 25 70 Z" fill="#8b6f47"/>
-          <ellipse cx="51" cy="78" rx="26" ry="3" fill="#7a3e35"/>
-        </svg>
-        <div class="gallery-thumb-label">In situ</div>
-      </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#ebe6dc"/>
-          <!-- Detail of brass inlay -->
-          <circle cx="50" cy="50" r="28" fill="none" stroke="#8b6f47" stroke-width="1"/>
-          <circle cx="50" cy="50" r="15" fill="#d4b88e" opacity="0.5"/>
-          <circle cx="50" cy="50" r="6" fill="#8b6f47"/>
-          <line x1="10" y1="50" x2="90" y2="50" stroke="#d4b88e" stroke-width="0.8"/>
-        </svg>
-        <div class="gallery-thumb-label">Detail</div>
-      </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#7a3e35"/>
-          <!-- Velvet swatch -->
-          <path d="M 0 30 Q 50 20 100 30" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
-          <path d="M 0 60 Q 50 50 100 60" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
-          <circle cx="30" cy="50" r="2" fill="rgba(0,0,0,0.3)"/>
-          <circle cx="50" cy="55" r="2" fill="rgba(0,0,0,0.3)"/>
-          <circle cx="70" cy="50" r="2" fill="rgba(0,0,0,0.3)"/>
-        </svg>
-        <div class="gallery-thumb-label">Velvet</div>
-      </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#ebe6dc"/>
-          <!-- Dimensions sketch -->
-          <rect x="30" y="20" width="40" height="50" fill="none" stroke="#1a1815" stroke-width="1"/>
-          <line x1="20" y1="20" x2="20" y2="70" stroke="#1a1815" stroke-width="0.5"/>
-          <line x1="15" y1="20" x2="25" y2="20" stroke="#1a1815" stroke-width="0.5"/>
-          <line x1="15" y1="70" x2="25" y2="70" stroke="#1a1815" stroke-width="0.5"/>
-          <text x="80" y="48" fill="#8b6f47" font-family="Cormorant Garamond" font-size="14" font-style="italic">82</text>
-        </svg>
-        <div class="gallery-thumb-label">Sizes</div>
-      </div>
-    </div>
   </div>
+</div>
 
-  <!-- INFO -->
-  <div class="info">
+<!-- INFO SECTION (below gallery) -->
+<div class="info-section reveal-up">
+
+  <!-- LEFT: name, price, CTA -->
+  <div class="info-left">
+    <div class="info-origin">A world first</div>
     <h1 class="info-name">CEO Table</h1>
     <div class="info-subtitle">Motorized executive desk</div>
 
+    <p class="info-positioning">
+      A world first — the first motorized sit-to-stand desk designed by an architect of luxury private clubs and residences.
+    </p>
+
     <div class="info-price-row">
       <div class="info-price">
-        Coming soon
+        <small>Pricing</small>
+        On request
       </div>
     </div>
 
-    <!-- CONFIGURATOR -->
-    <div class="config">
-      <div class="config-group">
-        <div class="config-label">
-          <span>Upholstery</span>
-          <span class="selected" id="upholstery-name">Vermilion silk velvet</span>
-        </div>
-        <div class="config-swatches" data-group="upholstery">
-          <div class="swatch vermilion active" data-name="Vermilion silk velvet"></div>
-          <div class="swatch midnight" data-name="Midnight wool bouclé"></div>
-          <div class="swatch bone" data-name="Bone linen"></div>
-          <div class="swatch olive" data-name="Olive mohair"></div>
-          <div class="swatch cognac" data-name="Cognac saddle leather"></div>
-        </div>
-      </div>
-
-      <div class="config-group">
-        <div class="config-label">
-          <span>Frame finish</span>
-          <span class="selected" id="frame-name">Patinated oak</span>
-        </div>
-        <div class="config-swatches" data-group="frame">
-          <div class="swatch oak-natural" data-name="Natural oak"></div>
-          <div class="swatch oak-dark active" data-name="Patinated oak"></div>
-          <div class="swatch oak-lacquer" data-name="Black lacquer"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DELIVERY PICKER -->
-    <div class="delivery-picker">
-      <div class="delivery-title">Production &amp; delivery</div>
-      <div class="delivery-options">
-        <button class="delivery-opt" data-shipping="sea">
-          <div class="delivery-opt-name">Sea freight</div>
-          <div class="delivery-opt-time">9–12 weeks</div>
-          <div class="delivery-opt-extra">Included · White-glove</div>
-        </button>
-        <button class="delivery-opt active" data-shipping="air">
-          <div class="delivery-opt-name">Air freight</div>
-          <div class="delivery-opt-time">7 weeks</div>
-          <div class="delivery-opt-extra">+ € 480 · Priority</div>
-        </button>
-      </div>
-      <div class="delivery-eta">
-        <span>Estimated arrival</span>
-        <strong id="eta-date">Week of 7 July 2026</strong>
-      </div>
-    </div>
-
-    <!-- ACTIONS -->
     <div class="actions">
-      <button class="btn btn-reserve" type="button" data-open-inquiry>Réserver cette édition</button>
+      <button class="btn-reserve" type="button" data-open-inquiry>Inquire for early access</button>
     </div>
 
     <div class="samples">
-      <button class="btn-tertiary">Order free material samples →</button>
+      <button class="btn-tertiary">Request a project consultation →</button>
       <button class="btn-tertiary">Request a trade quote (architects &amp; designers) →</button>
       <button class="btn-tertiary">Speak with a project manager →</button>
     </div>
+  </div>
 
-    <!-- ASSURANCES -->
+  <!-- RIGHT: config, delivery, assurances -->
+  <div class="info-right">
+    <div class="config">
+      <div style="margin-bottom:28px;">
+        <div class="config-label">
+          <span>Configuration</span>
+          <span class="selected">On request</span>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-top:4px;">Wood essences, structure finishes, and dimensions are determined in consultation. Each desk is drawn for its space.</p>
+      </div>
+    </div>
+
+    <div class="delivery-picker">
+      <div class="delivery-title">Production &amp; delivery</div>
+      <div style="padding:12px 0;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--accent-deep);">Lead time — on request</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">Each desk is made to order. Contact us for a project consultation and production schedule.</div>
+    </div>
+
     <div class="assurances">
       <div class="assurance">
         <svg class="assurance-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1562,7 +1370,7 @@ body::before {
           <path d="M9 12l2 2 4-4"/>
         </svg>
         <div class="assurance-title">10-year guarantee</div>
-        <div class="assurance-body">Frame &amp; joinery covered against defects.</div>
+        <div class="assurance-body">Structure &amp; mechanism covered against defects.</div>
       </div>
       <div class="assurance">
         <svg class="assurance-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1576,289 +1384,170 @@ body::before {
       </div>
       <div class="assurance">
         <svg class="assurance-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 1 6 2"/>
-          <path d="M21 5l-6 6-3-3"/>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4l3 3"/>
         </svg>
-        <div class="assurance-title">Returnable</div>
-        <div class="assurance-body">14 days from delivery (non-custom only).</div>
+        <div class="assurance-title">Bespoke timeline</div>
+        <div class="assurance-body">Schedule discussed at project intake.</div>
       </div>
     </div>
   </div>
 
-</section>
+</div>
 
 <!-- STORY -->
-<section class="story">
+<section class="story reveal-up">
   <div class="story-inner">
     <div class="story-label">The story</div>
-    <h2 class="story-title">Drawn for the <em>Dragon Room.</em></h2>
+    <h2 class="story-title">The desk that <em>rises with you.</em></h2>
     <p class="story-body">
-      In 2020, Yacine Bensalem was commissioned to design The Bankers Club, a 2,000-member private members club spanning 2,000 square meters in Hong Kong's central district. The Dragon Room — its inner sanctum, lacquered in auspicious red and gold, lined with brass inlays — needed seating that could hold the gravity of the room without competing with it.
-    </p>
-    <p class="story-body">
-      Nothing on the market answered. We drew the chair you see here over four months, prototyped it twice with our manufacturing partner in the Pearl River Delta, and installed thirty-two units by spring 2021. Five years later, every single one is still in service. <em>This is the production version of the chair that lives at the Bankers Club.</em>
+      A world first — the first motorized sit-to-stand desk conceived and designed by an architect of luxury private clubs and residences. Where most height-adjustable desks are engineering objects, the CEO Table is a piece of furniture: it holds the same language as the rooms Yacine Bensalem designs, and moves in silence.
     </p>
 
     <div class="story-pullquote">
-      A chair has to hold the gravity of a room without competing with it. The Dragon was drawn for that.
+      Where most desks are engineering objects, this one is a piece of furniture. It moves in silence.
     </div>
 
     <p class="story-body">
-      The chinoiserie central motif — a brass medallion at the back, a botanical line drawn freehand — references the room's lacquered panels. The vermilion silk velvet was sourced from a mill in Lake Como that has supplied Hermès for forty years. The patinated oak frame is from an atelier two hours from our Hong Kong studio. We can be there in a morning.
-    </p>
-    <p class="story-body">
-      Built for hospitality intensity. Finished for domestic comfort. Available in five upholsteries and three frame finishes. <em>Six weeks production, then your choice of shipping.</em>
+      Conceived for the executive who does not separate work from design. <em>Configuration, dimensions, and finishes are determined in consultation — each piece is drawn for its space.</em>
     </p>
   </div>
 </section>
 
 <!-- SPECS -->
-<section class="specs">
+<section class="specs reveal-up">
   <div class="specs-inner">
     <div>
       <div class="specs-label">Specifications</div>
-      <h2 class="specs-title">Dimensions, materials, <em>care.</em></h2>
+      <h2 class="specs-title">Dimensions, materials, <em>configuration.</em></h2>
       <ul class="specs-list">
-        <li><span class="label">Height (overall)</span><span class="value">82 cm</span></li>
-        <li><span class="label">Seat height</span><span class="value">46 cm</span></li>
-        <li><span class="label">Width</span><span class="value">68 cm</span></li>
-        <li><span class="label">Depth</span><span class="value">72 cm</span></li>
-        <li><span class="label">Weight</span><span class="value">22 kg</span></li>
-        <li><span class="label">Frame</span><span class="value">European oak, joinery hand-finished</span></li>
-        <li><span class="label">Seat</span><span class="value">FSC plywood + high-resilience foam</span></li>
-        <li><span class="label">Brass inlay</span><span class="value">Solid brass, hand-polished</span></li>
-        <li><span class="label">Made in</span><span class="value">Pearl River Delta, China</span></li>
-        <li><span class="label">Lead time</span><span class="value">6 weeks ex works + shipping</span></li>
+        <li><span class="label">Width</span><span class="value">On request</span></li>
+        <li><span class="label">Depth</span><span class="value">On request</span></li>
+        <li><span class="label">Height range (sit-to-stand)</span><span class="value">On request</span></li>
+        <li><span class="label">Mechanism</span><span class="value">Motorized sit-to-stand</span></li>
+        <li><span class="label">Top material</span><span class="value">On request</span></li>
+        <li><span class="label">Structure</span><span class="value">On request</span></li>
+        <li><span class="label">Lead time</span><span class="value">On request</span></li>
       </ul>
       <div class="specs-cta">
-        <a href="#">Download tech sheet (PDF)</a>
-        <a href="#">CAD &amp; BIM files (trade)</a>
-        <a href="#">3D model (.GLB)</a>
+        <a href="#" data-open-inquiry>Request specifications</a>
+        <a href="#" data-open-inquiry>Speak with a project manager</a>
       </div>
     </div>
     <div class="specs-drawing">
       <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
         <rect width="500" height="500" fill="#ebe6dc"/>
-        <!-- Technical line drawing of chair -->
-        <g stroke="#1a1815" stroke-width="1" fill="none">
-          <!-- Side view chair -->
-          <path d="M 150 130 Q 150 90 180 90 L 220 90 Q 250 90 250 130 L 250 280 L 350 280 L 350 310 L 145 310 L 145 130 Z"/>
-          <line x1="145" y1="310" x2="145" y2="430"/>
-          <line x1="350" y1="310" x2="350" y2="430"/>
-          <line x1="250" y1="280" x2="250" y2="430"/>
-          <line x1="140" y1="430" x2="155" y2="430"/>
-          <line x1="345" y1="430" x2="355" y2="430"/>
-          <line x1="245" y1="430" x2="255" y2="430"/>
+
+        <!-- Desk top surface -->
+        <rect x="55" y="168" width="390" height="16" fill="#1a1815" rx="1"/>
+
+        <!-- Left column (height-adjustable) -->
+        <rect x="78" y="184" width="18" height="190" fill="#3a3128"/>
+        <!-- Left base foot -->
+        <rect x="55" y="372" width="68" height="14" fill="#3a3128" rx="2"/>
+
+        <!-- Right column -->
+        <rect x="404" y="184" width="18" height="190" fill="#3a3128"/>
+        <!-- Right base foot -->
+        <rect x="377" y="372" width="68" height="14" fill="#3a3128" rx="2"/>
+
+        <!-- Height adjustment indicator (arrows) -->
+        <g stroke="#8b6f47" stroke-width="0.8" fill="none">
+          <line x1="36" y1="168" x2="36" y2="386"/>
+          <line x1="30" y1="168" x2="42" y2="168"/>
+          <line x1="30" y1="386" x2="42" y2="386"/>
+          <!-- Arrow heads -->
+          <polyline points="32,182 36,168 40,182"/>
+          <polyline points="32,372 36,386 40,372"/>
         </g>
 
-        <!-- Dimensions -->
-        <g stroke="#8b6f47" stroke-width="0.5" fill="none">
-          <line x1="100" y1="90" x2="100" y2="430"/>
-          <line x1="95" y1="90" x2="105" y2="90"/>
-          <line x1="95" y1="430" x2="105" y2="430"/>
-          <line x1="100" y1="310" x2="105" y2="310"/>
-
-          <line x1="145" y1="460" x2="350" y2="460"/>
-          <line x1="145" y1="455" x2="145" y2="465"/>
-          <line x1="350" y1="455" x2="350" y2="465"/>
-        </g>
-
-        <text x="78" y="265" fill="#8b6f47" font-family="Cormorant Garamond" font-size="16" font-style="italic">82</text>
-        <text x="68" y="380" fill="#8b6f47" font-family="Cormorant Garamond" font-size="13" font-style="italic">46</text>
-        <text x="240" y="480" fill="#8b6f47" font-family="Cormorant Garamond" font-size="16" font-style="italic">72</text>
-
-        <!-- Units -->
-        <text x="78" y="280" fill="#6b6357" font-family="Inter Tight" font-size="8" letter-spacing="2">CM</text>
+        <!-- Cable management suggestion -->
+        <line x1="87" y1="280" x2="87" y2="320" stroke="#8b6f47" stroke-width="0.5" stroke-dasharray="3,3"/>
 
         <!-- Labels -->
-        <text x="170" y="55" fill="#6b6357" font-family="Inter Tight" font-size="9" letter-spacing="2">DRAGON · SIDE VIEW</text>
-        <text x="170" y="68" fill="#8b6f47" font-family="Cormorant Garamond" font-size="11" font-style="italic">Scale 1:8</text>
+        <text x="250" y="58" fill="#6b6357" font-family="Inter Tight" font-size="9" letter-spacing="2" text-anchor="middle">CEO TABLE · SIDE VIEW</text>
+        <text x="250" y="72" fill="#8b6f47" font-family="Cormorant Garamond" font-size="11" font-style="italic" text-anchor="middle">Height-adjustable · dimensions on request</text>
+
+        <!-- Height label -->
+        <text x="20" y="280" fill="#8b6f47" font-family="Cormorant Garamond" font-size="12" font-style="italic" text-anchor="middle">↕</text>
+        <text x="20" y="296" fill="#6b6357" font-family="Inter Tight" font-size="7" letter-spacing="1" text-anchor="middle">ON REQ.</text>
       </svg>
     </div>
   </div>
 </section>
 
 <!-- SEEN IN -->
-<section class="seen-in">
+<section class="seen-in reveal-up">
   <div class="seen-header">
-    <div class="seen-label">Seen in situ</div>
-    <h2 class="seen-title">Where the Dragon <em>has lived.</em></h2>
+    <div class="seen-label">The desk</div>
+    <h2 class="seen-title">CEO Table <em>in space.</em></h2>
   </div>
 
   <div class="seen-grid">
     <div class="seen-main">
-      <svg viewBox="0 0 700 525" xmlns="http://www.w3.org/2000/svg">
-        <rect width="700" height="525" fill="#1a1815"/>
-        <!-- Lacquer red ceiling -->
-        <rect x="0" y="0" width="700" height="120" fill="#5a1f1a"/>
-        <ellipse cx="350" cy="50" rx="380" ry="40" fill="#7a3e35" opacity="0.6"/>
-        <!-- Brass strip -->
-        <line x1="0" y1="120" x2="700" y2="120" stroke="#d4b88e" stroke-width="2"/>
-        <line x1="0" y1="124" x2="700" y2="124" stroke="#8b6f47" stroke-width="1" opacity="0.6"/>
-        <!-- Wood boiserie -->
-        <rect x="0" y="124" width="700" height="280" fill="#3d2e1a"/>
-        <rect x="60" y="150" width="160" height="220" fill="none" stroke="rgba(212,184,142,0.45)" stroke-width="0.8"/>
-        <rect x="240" y="150" width="160" height="220" fill="none" stroke="rgba(212,184,142,0.45)" stroke-width="0.8"/>
-        <rect x="420" y="150" width="160" height="220" fill="none" stroke="rgba(212,184,142,0.45)" stroke-width="0.8"/>
-        <!-- Mirror with botanical -->
-        <rect x="270" y="170" width="100" height="160" fill="rgba(212,184,142,0.18)" stroke="#d4b88e" stroke-width="1"/>
-        <!-- Brass sconces -->
-        <circle cx="140" cy="240" r="14" fill="#d4b88e" opacity="0.8"/>
-        <circle cx="500" cy="240" r="14" fill="#d4b88e" opacity="0.8"/>
-        <ellipse cx="140" cy="280" rx="40" ry="8" fill="rgba(212,184,142,0.2)"/>
-        <ellipse cx="500" cy="280" rx="40" ry="8" fill="rgba(212,184,142,0.2)"/>
-        <!-- Two Dragon chairs facing -->
-        <path d="M 150 330 Q 150 295 195 295 L 270 295 Q 320 295 320 330 L 320 410 Q 320 420 310 420 L 160 420 Q 150 420 150 410 Z" fill="#8b6f47"/>
-        <ellipse cx="235" cy="244" rx="14" ry="10" fill="rgba(212,184,142,0.3)"/>
-        <ellipse cx="235" cy="423" rx="80" ry="6" fill="#5a2820"/>
-        <rect x="148" y="418" width="170" height="11" rx="2" fill="#7a3e35"/>
-        <rect x="170" y="429" width="4" height="60" fill="#1a1815"/>
-        <rect x="296" y="429" width="4" height="60" fill="#1a1815"/>
-
-        <path d="M 380 330 Q 380 295 425 295 L 500 295 Q 550 295 550 330 L 550 410 Q 550 420 540 420 L 390 420 Q 380 420 380 410 Z" fill="#8b6f47"/>
-        <ellipse cx="465" cy="423" rx="80" ry="6" fill="#5a2820"/>
-        <rect x="378" y="418" width="170" height="11" rx="2" fill="#7a3e35"/>
-        <rect x="400" y="429" width="4" height="60" fill="#1a1815"/>
-        <rect x="526" y="429" width="4" height="60" fill="#1a1815"/>
-        <!-- Side table between -->
-        <ellipse cx="350" cy="430" rx="20" ry="4" fill="#5d4828"/>
-        <ellipse cx="350" cy="426" rx="20" ry="4" fill="#a8896a"/>
-        <rect x="346" y="430" width="8" height="60" fill="#5d4828"/>
-        <!-- Floor reflection -->
-        <line x1="0" y1="488" x2="700" y2="488" stroke="rgba(139,111,71,0.25)" stroke-width="0.5"/>
-        <rect x="0" y="488" width="700" height="37" fill="#0e0c0a"/>
-
-        <!-- Caption overlay gradient -->
-        <rect x="0" y="380" width="700" height="145" fill="url(#captionGrad)"/>
-        <defs>
-          <linearGradient id="captionGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="rgba(26,24,21,0)"/>
-            <stop offset="100%" stop-color="rgba(26,24,21,0.7)"/>
-          </linearGradient>
-        </defs>
-      </svg>
+      <img src="img/ceo-table-context.jpg" alt="CEO Table — in-context view">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,8,0.6) 0%,transparent 50%);pointer-events:none;"></div>
       <div class="seen-caption">
-        <div class="seen-caption-loc">Hong Kong · 2021</div>
-        <div class="seen-caption-name">The Bankers Club, Dragon Room</div>
+        <div class="seen-caption-loc">In Situ Editions · 2026</div>
+        <div class="seen-caption-name">CEO Table — in context</div>
       </div>
     </div>
 
     <div class="seen-side">
-      <svg viewBox="0 0 500 375" xmlns="http://www.w3.org/2000/svg">
-        <rect width="500" height="375" fill="#3a3128"/>
-        <!-- Window soft light -->
-        <rect x="40" y="40" width="140" height="200" fill="#1a1815"/>
-        <rect x="44" y="44" width="132" height="192" fill="rgba(212,184,142,0.18)"/>
-        <line x1="110" y1="40" x2="110" y2="240" stroke="#0e0c0a" stroke-width="2"/>
-        <line x1="40" y1="135" x2="180" y2="135" stroke="#0e0c0a" stroke-width="2"/>
-        <!-- Light spill -->
-        <path d="M 40 240 L 180 240 L 280 375 L 0 375 Z" fill="rgba(212,184,142,0.1)"/>
-        <!-- Dragon chair in Paris XVI living room -->
-        <path d="M 270 230 Q 270 195 305 195 L 380 195 Q 415 195 415 230 L 415 305 Q 415 315 405 315 L 280 315 Q 270 315 270 305 Z" fill="#8b6f47"/>
-        <ellipse cx="343" cy="318" rx="75" ry="6" fill="#5a2820"/>
-        <rect x="270" y="313" width="148" height="11" rx="2" fill="#7a3e35"/>
-        <rect x="288" y="324" width="4" height="40" fill="#1a1815"/>
-        <rect x="396" y="324" width="4" height="40" fill="#1a1815"/>
-        <!-- XVI table beside -->
-        <ellipse cx="450" cy="290" rx="30" ry="5" fill="#5d4828"/>
-        <ellipse cx="450" cy="285" rx="30" ry="5" fill="#a8896a"/>
-        <rect x="446" y="290" width="8" height="75" fill="#5d4828"/>
-        <!-- Floor line -->
-        <line x1="0" y1="340" x2="500" y2="340" stroke="rgba(139,111,71,0.15)" stroke-width="0.5"/>
-
-        <rect x="0" y="260" width="500" height="115" fill="url(#capGrad2)"/>
-        <defs>
-          <linearGradient id="capGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="rgba(26,24,21,0)"/>
-            <stop offset="100%" stop-color="rgba(26,24,21,0.7)"/>
-          </linearGradient>
-        </defs>
-      </svg>
+      <img src="img/ceo-table-reference.jpg" alt="CEO Table — reference view">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,8,0.6) 0%,transparent 50%);pointer-events:none;"></div>
       <div class="seen-caption">
-        <div class="seen-caption-loc">Paris XVI · 2023</div>
-        <div class="seen-caption-name">Living Room, by the fireplace</div>
+        <div class="seen-caption-loc">Detail · 2026</div>
+        <div class="seen-caption-name">CEO Table — reference</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- RELATED -->
-<section class="related">
+<section class="related reveal-up">
   <div class="related-header">
-    <h2 class="related-title">From the <em>same room.</em></h2>
-    <a href="#" style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 4px; font-weight: 500;">View collection →</a>
+    <h2 class="related-title">From the <em>same world.</em></h2>
+    <a href="index.html#collection" style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 4px; font-weight: 500;">View collection →</a>
   </div>
 
   <div class="related-grid">
-    <a href="product-sideboard-01.html" class="rel-card-link" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
+    <a href="product-dragon.html" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
       <div class="rel-image">
-        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="500" fill="#ebe6dc"/>
-          <ellipse cx="200" cy="400" rx="170" ry="8" fill="rgba(0,0,0,0.12)"/>
-          <path d="M 50 250 Q 50 210 80 210 L 320 210 Q 350 210 350 250 L 350 380 Q 350 395 335 395 L 65 395 Q 50 395 50 380 Z" fill="#3d4a55"/>
-          <line x1="60" y1="220" x2="60" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="105" y1="220" x2="105" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="150" y1="220" x2="150" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="200" y1="220" x2="200" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="250" y1="220" x2="250" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="295" y1="220" x2="295" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <line x1="340" y1="220" x2="340" y2="385" stroke="rgba(0,0,0,0.25)" stroke-width="1"/>
-          <rect x="60" y="395" width="6" height="20" fill="#8b6f47"/>
-          <rect x="334" y="395" width="6" height="20" fill="#8b6f47"/>
-        </svg>
+        <img src="img/product-dragon.jpg" alt="Dragon">
       </div>
       <div class="rel-info">
         <div>
-          <div class="rel-name">Treasury</div>
-          <div class="rel-meta">Velvet banquette</div>
+          <div class="rel-name">Dragon</div>
+          <div class="rel-meta">Chinoiserie lounge chair</div>
         </div>
-        <div class="rel-price">€ 8 200</div>
+        <div class="rel-price">€ 4,200</div>
       </div>
     </div></a>
 
-    <a href="product-coffee-table-01.html" class="rel-card-link" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
+    <a href="product-alcove.html" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
       <div class="rel-image">
-        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="500" fill="#ebe6dc"/>
-          <ellipse cx="200" cy="385" rx="160" ry="8" fill="rgba(0,0,0,0.12)"/>
-          <ellipse cx="200" cy="225" rx="150" ry="20" fill="#5d4828"/>
-          <ellipse cx="200" cy="218" rx="150" ry="20" fill="#a8896a"/>
-          <path d="M 80 218 Q 130 215 180 220" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" fill="none"/>
-          <path d="M 220 222 Q 260 218 320 220" stroke="rgba(255,255,255,0.2)" stroke-width="0.5" fill="none"/>
-          <path d="M 50 218 L 50 225 Q 50 235 200 235 Q 350 235 350 225 L 350 218 Z" fill="#3a3128"/>
-          <path d="M 175 235 L 175 350 Q 175 370 200 370 Q 225 370 225 350 L 225 235 Z" fill="#5d4828"/>
-          <ellipse cx="200" cy="370" rx="55" ry="8" fill="#2a2520"/>
-        </svg>
+        <img src="img/product-alcove.jpg" alt="Alcove">
+      </div>
+      <div class="rel-info">
+        <div>
+          <div class="rel-name">Alcove</div>
+          <div class="rel-meta">Reading armchair</div>
+        </div>
+        <div class="rel-price">€ 5,800</div>
+      </div>
+    </div></a>
+
+    <a href="product-xvi.html" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
+      <div class="rel-image">
+        <img src="img/product-xvi.jpg" alt="XVI">
       </div>
       <div class="rel-info">
         <div>
           <div class="rel-name">XVI</div>
-          <div class="rel-meta">Side table · Travertine</div>
+          <div class="rel-meta">Side table</div>
         </div>
-        <div class="rel-price">€ 3 400</div>
-      </div>
-    </div></a>
-
-    <a href="product-high-chair-01.html" class="rel-card-link" style="text-decoration:none;color:inherit;display:block;"><div class="rel-card">
-      <div class="rel-image">
-        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="500" fill="#ebe6dc"/>
-          <ellipse cx="200" cy="445" rx="80" ry="6" fill="rgba(0,0,0,0.15)"/>
-          <ellipse cx="200" cy="180" rx="80" ry="14" fill="#5d4828"/>
-          <ellipse cx="200" cy="172" rx="80" ry="14" fill="#a8896a"/>
-          <path d="M 192 186 L 188 380 L 212 380 L 208 186 Z" fill="#8b6f47"/>
-          <path d="M 192 186 L 192 380 L 200 380 L 200 186 Z" fill="rgba(212,184,142,0.4)"/>
-          <ellipse cx="200" cy="280" rx="55" ry="3" fill="none" stroke="#8b6f47" stroke-width="2"/>
-          <ellipse cx="200" cy="390" rx="50" ry="8" fill="#2a2520"/>
-          <ellipse cx="200" cy="385" rx="50" ry="8" fill="#5d4828"/>
-        </svg>
-      </div>
-      <div class="rel-info">
-        <div>
-          <div class="rel-name">Chairman</div>
-          <div class="rel-meta">Bar stool · Patinated copper</div>
-        </div>
-        <div class="rel-price">€ 2 400</div>
+        <div class="rel-price">€ 3,400</div>
       </div>
     </div></a>
   </div>
@@ -1876,112 +1565,35 @@ body::before {
     <a href="index.html#footer">Contact</a>
   </div>
   <div style="margin-top: 32px; font-size: 11px; color: rgba(245,242,236,0.35); letter-spacing: 0.05em;">
-    © 2027 In Situ Editions · An initiative of In Situ &amp; Partners, Hong Kong
+    © 2026 In Situ Editions · An initiative of In Situ &amp; Partners, Hong Kong
   </div>
 </footer>
 
-<script>
-// Swatch selection
-document.querySelectorAll('.config-swatches').forEach(group => {
-  group.addEventListener('click', (e) => {
-    const swatch = e.target.closest('.swatch');
-    if (!swatch) return;
-
-    group.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
-    swatch.classList.add('active');
-
-    const name = swatch.dataset.name;
-    const groupName = group.dataset.group;
-
-    if (groupName === 'upholstery') {
-      document.getElementById('upholstery-name').textContent = name;
-    } else if (groupName === 'frame') {
-      document.getElementById('frame-name').textContent = name;
-    }
-  });
-});
-
-// Delivery picker
-document.querySelectorAll('.delivery-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    document.querySelectorAll('.delivery-opt').forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
-
-    const shipping = opt.dataset.shipping;
-    const today = new Date(2026, 4, 19); // 19 May 2026
-    let etaDate;
-
-    if (shipping === 'air') {
-      etaDate = new Date(today.getTime() + 7 * 7 * 24 * 60 * 60 * 1000);
-    } else {
-      etaDate = new Date(today.getTime() + 10 * 7 * 24 * 60 * 60 * 1000);
-    }
-
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const eta = document.getElementById('eta-date');
-    eta.textContent = `Week of ${etaDate.getDate()} ${months[etaDate.getMonth()]} ${etaDate.getFullYear()}`;
-  });
-});
-
-// Gallery context toggle (En situ / Isolé)
-(function galleryContextToggle() {
-  const main = document.querySelector('.gallery-main');
-  const buttons = document.querySelectorAll('.gallery-toggle button');
-  if (!main || !buttons.length) return;
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.mode;
-      main.dataset.mode = mode;
-      buttons.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('active', active);
-        b.setAttribute('aria-pressed', active ? 'true' : 'false');
-      });
-    });
-  });
-})();
-
-// Gallery thumb selection
-document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-  thumb.addEventListener('click', () => {
-    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-  });
-});
-
-// Sync sticky mobile bar price with main info price
-(function syncStickyPrice() {
-  const source = document.querySelector('.info-price');
-  const target = document.getElementById('smb-price-value');
-  if (!source || !target) return;
-  const extract = () => {
-    const clone = source.cloneNode(true);
-    clone.querySelectorAll('small').forEach(el => el.remove());
-    target.textContent = clone.textContent.trim();
-  };
-  extract();
-  new MutationObserver(extract).observe(source, { childList: true, characterData: true, subtree: true });
-})();
-</script>
-
-<!-- STICKY MOBILE BAR (≤ 879px) -->
+<!-- STICKY MOBILE BAR -->
 <div class="sticky-mobile-bar" role="region" aria-label="Reservation actions">
   <div class="smb-price">
-    <span id="smb-price-value">Coming soon</span>
+    <small>Pricing</small>
+    <span>On request</span>
   </div>
   <a class="smb-wa" href="https://wa.me/85212345678?text=Hello%2C%20I%27m%20interested%20in%20the%20CEO%20Table." target="_blank" rel="noopener" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.967-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.226 1.36.194 1.871.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.889-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.886 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-  <button class="smb-reserve" type="button" data-open-inquiry>Réserver</button>
+  <button class="smb-reserve" type="button" data-open-inquiry>Inquire</button>
+</div>
+
+<!-- FULLSCREEN OVERLAY -->
+<div class="ig-fs-overlay" id="ig-fs-overlay" hidden>
+  <button class="ig-fs-close" id="ig-fs-close" aria-label="Fermer">&#215;</button>
+  <img class="ig-fs-img" id="ig-fs-img" src="" alt="">
 </div>
 
 <!-- INQUIRY MODAL -->
 <div class="inquiry-modal" id="inquiry-modal" role="dialog" aria-modal="true" aria-labelledby="inquiry-title" hidden>
   <div class="inquiry-card">
     <button class="inquiry-close" type="button" data-close-inquiry aria-label="Close">×</button>
-    <div class="inquiry-eyebrow">Édition CEO Table</div>
-    <h2 class="inquiry-title" id="inquiry-title">Réserver cette édition</h2>
-    <p class="inquiry-lede">Pieces are made to order in our Pearl River Delta atelier. Tell us about your project — we reply within one business day.</p>
+    <div class="inquiry-eyebrow">CEO Table · Early access</div>
+    <h2 class="inquiry-title" id="inquiry-title">Request early access</h2>
+    <p class="inquiry-lede">Each desk is made to order and drawn for its space. Tell us about your project — we reply within one business day.</p>
     <form class="inquiry-form" id="inquiry-form" novalidate>
       <div class="inquiry-field">
         <label for="inq-name">Name</label>
@@ -1992,14 +1604,59 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
         <input id="inq-contact" name="contact" type="text" required autocomplete="email" placeholder="+852 … or you@studio.com">
       </div>
       <div class="inquiry-field">
-        <label for="inq-message">Message</label>
-        <textarea id="inq-message" name="message" placeholder="Configuration, quantity, delivery destination…"></textarea>
+        <label for="inq-message">Your project</label>
+        <textarea id="inq-message" name="message" placeholder="Space dimensions, intended use, delivery location…"></textarea>
       </div>
       <button class="inquiry-submit" type="submit">Send inquiry</button>
-      <div class="inquiry-foot">No payment taken — we open a private quote thread.</div>
+      <div class="inquiry-foot">No payment taken — we open a private project thread.</div>
     </form>
   </div>
 </div>
+
+<script>
+(function igGallery() {
+  const gallery = document.getElementById('ceo-gallery');
+  const overlay = document.getElementById('ig-fs-overlay');
+  const fsImg   = document.getElementById('ig-fs-img');
+  const fsClose = document.getElementById('ig-fs-close');
+  if (!gallery || !overlay) return;
+
+  const slides = Array.from(gallery.querySelectorAll('.ig-slide'));
+
+  function openFs(idx) {
+    fsImg.src = slides[idx].dataset.src;
+    fsImg.alt = slides[idx].querySelector('.ig-photo').alt;
+    overlay.hidden = false;
+    requestAnimationFrame(() => overlay.classList.add('is-open'));
+    document.body.style.overflow = 'hidden';
+  }
+  function closeFs() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+    const done = () => { overlay.hidden = true; fsImg.src = ''; };
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      overlay.addEventListener('transitionend', done, { once: true });
+    } else { done(); }
+  }
+
+  gallery.querySelectorAll('.ig-fs-btn').forEach((btn, i) => {
+    btn.addEventListener('click', e => { e.stopPropagation(); openFs(i); });
+  });
+  slides.forEach((slide, i) => {
+    slide.addEventListener('click', e => {
+      if (e.target.closest('.ig-fs-btn')) return;
+      openFs(i);
+    });
+  });
+
+  fsClose.addEventListener('click', closeFs);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeFs(); });
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeFs();
+  });
+})();
+</script>
 
 <script>
 (function inquiryModal() {
@@ -2027,7 +1684,6 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
 (function scrollReveal() {
   if (!window.IntersectionObserver) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const SELECTORS = '.info, .assurances, .story, .specs, .seen-in, .related';
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -2035,10 +1691,7 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
       observer.unobserve(entry.target);
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll(SELECTORS).forEach(el => {
-    el.classList.add('reveal-up');
-    observer.observe(el);
-  });
+  document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
 })();
 </script>
 
