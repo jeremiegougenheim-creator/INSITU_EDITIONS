@@ -585,48 +585,13 @@ body::before {
 .product-badge-prov .bdot { background: #7a3e35; }
 .product-badge-excl .bdot { background: #B8945F; }
 
-/* === CEO TABLE CARD — pleine largeur === */
-.product-link-ceo { grid-column: 1 / -1; }
+/* === CEO TABLE CARD — taille normale, traitement or === */
 .product-ceo {
-  display: flex;
   border: 1px solid #B8945F;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
   transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
 }
 .product-ceo:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(184,148,95,0.12); }
-.product-ceo .product-image {
-  flex: 0 0 62%;
-  aspect-ratio: unset;
-  min-height: 360px;
-  margin-bottom: 0;
-}
-.product-ceo .product-info {
-  flex: 1;
-  padding: 48px 40px;
-  border-left: 1px solid rgba(184,148,95,0.3);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  align-items: flex-start;
-}
-.product-ceo .product-name {
-  font-size: 44px;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin-bottom: 4px;
-}
-.product-ceo .product-meta {
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-.product-ceo .product-price {
-  font-size: 32px;
-  color: #B8945F;
-  margin-top: 0;
-}
+.product-ceo .product-price { color: #B8945F; }
 
 .product-info {
   display: flex;
@@ -1452,12 +1417,6 @@ body::before {
   .collection-header { grid-template-columns: 1fr; }
   .collection-intro { justify-self: start; }
   .products { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .product-link-ceo { grid-column: 1 / -1; }
-  .product-ceo { flex-direction: column; }
-  .product-ceo .product-image { flex: none; width: 100%; min-height: 0; aspect-ratio: 16/9; }
-  .product-ceo .product-info { border-left: none; border-top: 1px solid rgba(184,148,95,0.3); padding: 20px 16px; gap: 4px; }
-  .product-ceo .product-name { font-size: 26px; }
-  .product-ceo .product-price { font-size: 22px; }
   .product-name { font-size: 15px !important; }
   .product-meta { font-size: 10px !important; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .product-price { font-size: 13px !important; margin-top: 5px !important; white-space: nowrap; }
@@ -1698,10 +1657,12 @@ body::before {
   }
 </style>
 <section class="ceo-teaser reveal" id="ceo-table">
-  <div class="ceo-media">
+  <a href="product-ceo-table.html" style="display:contents;">
+  <div class="ceo-media" style="cursor:pointer;">
     <img src="img/ceo-table-context.jpg" alt="CEO Table — in-context office view">
     <div class="ceo-badge"><span>Reference image · Real photos coming soon</span></div>
   </div>
+  </a>
   <div class="ceo-content">
     <div class="section-label" style="color:var(--bronze,#b08d57);">A world first</div>
     <h2 class="collection-title" style="max-width:18ch;margin:16px 0 0;">CEO Table.<br><em>Rises with you.</em></h2>
@@ -1768,16 +1729,18 @@ body::before {
 
   <div class="products">
 
-    <!-- CEO TABLE — Exclusivité, pleine largeur -->
+    <!-- CEO TABLE — Exclusivité -->
     <a href="product-ceo-table.html" class="product-link product-link-ceo"><article class="product product-ceo reveal">
       <div class="product-image">
         <img src="img/ceo-table-context.jpg" alt="CEO Table — In Situ Editions" class="img-cover">
         <div class="product-badge-excl"><span class="bdot"></span>Exclusivité</div>
       </div>
       <div class="product-info">
-        <div class="product-origin" style="color:#B8945F;letter-spacing:0.2em;">Executive desk</div>
-        <h3 class="product-name">CEO Table</h3>
-        <div class="product-meta">Motorized sit-to-stand · Bespoke dimensions</div>
+        <div>
+          <div class="product-origin" style="color:#B8945F;letter-spacing:0.2em;">Executive desk</div>
+          <h3 class="product-name">CEO Table</h3>
+          <div class="product-meta">Motorized sit-to-stand · Bespoke</div>
+        </div>
         <div class="product-price"><small>From</small>€ 8,900</div>
       </div>
     </article></a>
