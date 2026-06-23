@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authenticity & Provenance — In Situ Editions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #1a1815;
+  --black-deep: #0e0c0a;
+  --paper: #f5f2ec;
+  --paper-warm: #ebe6dc;
+  --accent: #8b6f47;
+  --accent-deep: #5d4828;
+  --line: #c9c1b3;
+  --muted: #6b6357;
+  --gold: #B8945F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--black);
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === NAV === */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(245, 242, 236, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  text-decoration: none;
+  color: var(--black);
+  line-height: 1;
+}
+.logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.logo-main em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+.logo-tag {
+  font-size: 8px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+  display: block;
+  font-weight: 500;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  padding: 4px 0;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100%; }
+.nav-links a.active { color: var(--accent); }
+
+.nav-toggle { display: none; background: transparent; border: 0; padding: 8px; cursor: pointer; color: var(--black); }
+.nav-toggle svg { width: 24px; height: 24px; display: block; }
+
+/* === HERO === */
+.hero {
+  background: var(--black);
+  color: var(--paper);
+  padding: 120px 80px 100px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  max-width: 14ch;
+  margin-bottom: 32px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-intro {
+  font-size: 17px;
+  line-height: 1.75;
+  font-weight: 300;
+  color: rgba(245,242,236,0.75);
+  max-width: 60ch;
+}
+
+/* === SECTION WRAPPER === */
+.section {
+  padding: 100px 80px;
+}
+.section-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 56px;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* === HOW IT WORKS (3 steps) === */
+.how-it-works {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-top: 0;
+}
+.step {
+  padding: 48px 40px;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+.step:last-child { border-right: none; }
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--paper-warm);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.step-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+.step-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.step-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  border: 0.5px solid rgba(184,148,95,0.4);
+  padding: 5px 10px;
+  border-radius: 100px;
+}
+.step-tag svg { flex-shrink: 0; }
+
+/* === WHY IT MATTERS === */
+.why {
+  background: var(--paper-warm);
+  border-top: 1px solid var(--line);
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin-top: 0;
+}
+.why-item {}
+.why-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+.why-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.why-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* === PROGRAMME STATUS === */
+.status {
+  background: var(--black);
+  color: var(--paper);
+  border-top: 1px solid rgba(245,242,236,0.1);
+}
+.status-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(184,148,95,0.12);
+  border: 0.5px solid rgba(184,148,95,0.4);
+  border-radius: 100px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+.status-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.status-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.status-title em { font-style: italic; color: var(--gold); }
+.status-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(245,242,236,0.65);
+  margin-bottom: 40px;
+}
+
+/* === FOOTER === */
+.footer {
+  background: var(--black-deep, #0e0c0a);
+  color: rgba(245, 242, 236, 0.5);
+  padding: 56px 80px 32px;
+  font-size: 13px;
+  text-align: center;
+}
+.footer-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: var(--paper);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.footer-brand em { font-style: italic; color: var(--accent); }
+.footer-links {
+  margin-top: 20px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.footer-links a {
+  color: rgba(245,242,236,0.4);
+  text-decoration: none;
+  margin: 0 14px;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* === SCROLL REVEAL === */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .steps { grid-template-columns: 1fr; }
+  .step { border-right: none; border-bottom: 1px solid var(--line); }
+  .step:last-child { border-bottom: none; }
+  .why-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  .nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .nav-links.is-open {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--paper);
+    padding: 12px 20px 20px;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    z-index: 150;
+  }
+  .nav-links.is-open li { width: 100%; border-bottom: 1px solid var(--line); }
+  .nav-links.is-open li:last-child { border-bottom: 0; }
+  .nav-links.is-open a { display: flex; align-items: center; min-height: 44px; font-size: 13px; }
+  .logo-tag { display: none; }
+  .hero { padding: 80px 24px 64px; }
+  .section { padding: 80px 24px; }
+  .status { padding: 80px 24px; }
+  .step { padding: 32px 24px; }
+  .footer { padding: 48px 24px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="logo">
+    <span class="logo-main">In Situ <em>Editions</em></span>
+    <span class="logo-tag">Hong Kong · Paris</span>
+  </a>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <ul class="nav-links">
+    <li><a href="index.html#collection">Collection</a></li>
+    <li><a href="index.html#origins">Origins</a></li>
+    <li><a href="index.html#projects">In Situ</a></li>
+    <li><a href="contract.html">Contract</a></li>
+    <li><a href="index.html#trade">Trade</a></li>
+    <li><a href="index.html#journal">Journal</a></li>
+    <li><a href="authenticity.html" class="active">Authenticity</a></li>
+    <li><a href="index.html#footer">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Certificate of authenticity</div>
+  <h1 class="hero-title">Authenticity &amp; <em>Provenance.</em></h1>
+  <p class="hero-intro">
+    Each piece from In Situ Editions is numbered and accompanied by a certificate of authenticity. The origin, placement, and ownership history of every piece are recorded in an immutable, publicly verifiable register.
+  </p>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-it-works reveal-up">
+  <div class="section-inner">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Three steps to a <em>permanent record.</em></h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">A unique <em>identifier</em></h3>
+        <p class="step-body">
+          Every piece bears a discreet engraved plate with a unique serial number — part of its physical identity, present for the life of the object.
+        </p>
+        <div class="step-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+          Serial number · engraved
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Recorded on <em>the blockchain</em></h3>
+        <p class="step-body">
+          The identifier, the piece's story, its original placement, and its ownership are registered on Polygon — a public, energy-efficient blockchain. The record cannot be altered or deleted.
+        </p>
+        <div class="step-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Polygon · public ledger
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Verifiable &amp; <em>transferable</em></h3>
+        <p class="step-body">
+          The owner can verify authenticity at any time by scanning or entering the serial number. In case of resale, the certificate transfers with the piece — the new owner inherits the complete provenance record.
+        </p>
+        <div class="step-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Verify · transfer · inherit
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY IT MATTERS -->
+<section class="section why reveal-up">
+  <div class="section-inner">
+    <div class="section-label">Why it matters</div>
+    <h2 class="section-title">An object with <em>a memory.</em></h2>
+    <div class="why-grid">
+
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        <h3 class="why-title">Resale value &amp; traceability</h3>
+        <p class="why-body">Provenance is one of the principal determinants of value at auction. A verifiable, unbroken record of ownership — from atelier to current holder — is an asset that appreciates alongside the piece itself.</p>
+      </div>
+
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="why-title">European product passport</h3>
+        <p class="why-body">The EU's Ecodesign for Sustainable Products Regulation (ESPR) will require digital product passports for most goods by 2030. In Situ Editions pieces are designed to meet this standard from the first edition.</p>
+      </div>
+
+      <div class="why-item">
+        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 6l9-3 9 3v6c0 5-4 9-9 10-5-1-9-5-9-10V6z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <h3 class="why-title">Guarantee against counterfeit</h3>
+        <p class="why-body">A record on a public blockchain cannot be duplicated or falsified. Any piece that cannot be matched to an entry in the ledger is not a genuine In Situ Editions piece.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME STATUS -->
+<section class="section status reveal-up">
+  <div class="status-inner">
+    <div class="status-badge">
+      <span class="status-badge-dot"></span>
+      Programme in preparation
+    </div>
+    <h2 class="status-title">Honest about <em>where we are.</em></h2>
+    <p class="status-body">
+      The certificate programme is being built in parallel with the first production run. Pieces from the inaugural edition will be the first to receive their on-chain record. No piece is currently listed on the ledger — that comes with delivery. If you have a question about the timeline, write to us directly.
+    </p>
+    <a href="mailto:editions@insitueditions.com?subject=Authenticity%20programme" style="display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:var(--gold);color:var(--black);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;text-decoration:none;font-family:'Inter Tight',sans-serif;">
+      Ask us directly
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">In Situ <em>Editions</em></div>
+  <div style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted,#6b6357);font-weight:500;margin-top:4px;">Hong Kong · Paris</div>
+  <div class="footer-links">
+    <a href="index.html#collection">Collection</a>
+    <a href="contract.html">Trade program</a>
+    <a href="index.html#journal">Journal</a>
+    <a href="index.html#footer">Contact</a>
+  </div>
+  <div style="margin-top:28px;font-size:11px;color:rgba(245,242,236,0.25);letter-spacing:0.05em;">
+    © 2026 In Situ Editions · An initiative of In Situ &amp; Partners, Hong Kong
+  </div>
+</footer>
+
+<script>
+(function scrollReveal() {
+  if (!window.IntersectionObserver) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+})();
+(function navToggle() {
+  const btn = document.querySelector('.nav-toggle');
+  const list = document.querySelector('.nav-links');
+  if (!btn || !list) return;
+  btn.addEventListener('click', () => {
+    const open = list.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+
+</body>
+</html>
