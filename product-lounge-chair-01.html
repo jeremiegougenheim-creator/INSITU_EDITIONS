@@ -1378,6 +1378,15 @@ body::before {
   }
   .reveal-up.is-visible { opacity: 1; transform: translateY(0); }
 }
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.gallery-thumb:hover img { transform: scale(1.06); }
 </style>
 </head>
 <body>
@@ -1429,54 +1438,30 @@ body::before {
     </div>
 
     <div class="gallery-thumbs">
-      <div class="gallery-thumb active">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#ebe6dc"/>
-          <path d="M 20 30 Q 20 15 35 15 L 65 15 Q 80 15 80 30 L 80 70 Q 80 78 73 78 L 27 78 Q 20 78 20 70 Z" fill="#8b6f47"/>
-          <ellipse cx="50" cy="80" rx="28" ry="4" fill="#7a3e35"/>
-        </svg>
+      <div class="gallery-thumb active" data-pos="center center">
+        <img src="img/tefaf-main-lounge.jpg" alt="Front view" style="object-position:center center;">
         <div class="gallery-thumb-label">Front</div>
       </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#3a3128"/>
-          <path d="M 25 35 Q 25 20 40 20 L 65 20 Q 78 20 78 35 L 78 70 Q 78 76 72 76 L 31 76 Q 25 76 25 70 Z" fill="#8b6f47"/>
-          <ellipse cx="51" cy="78" rx="26" ry="3" fill="#7a3e35"/>
-        </svg>
-        <div class="gallery-thumb-label">In situ</div>
-      </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#ebe6dc"/>
-          <!-- Detail of brass inlay -->
-          <circle cx="50" cy="50" r="28" fill="none" stroke="#8b6f47" stroke-width="1"/>
-          <circle cx="50" cy="50" r="15" fill="#d4b88e" opacity="0.5"/>
-          <circle cx="50" cy="50" r="6" fill="#8b6f47"/>
-          <line x1="10" y1="50" x2="90" y2="50" stroke="#d4b88e" stroke-width="0.8"/>
-        </svg>
+      <div class="gallery-thumb" data-pos="center 20%">
+        <img src="img/tefaf-main-lounge.jpg" alt="Top detail" style="object-position:center 20%; transform:scale(1.35); transform-origin:center 20%;">
         <div class="gallery-thumb-label">Detail</div>
       </div>
-      <div class="gallery-thumb">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100" height="100" fill="#7a3e35"/>
-          <!-- Velvet swatch -->
-          <path d="M 0 30 Q 50 20 100 30" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
-          <path d="M 0 60 Q 50 50 100 60" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
-          <circle cx="30" cy="50" r="2" fill="rgba(0,0,0,0.3)"/>
-          <circle cx="50" cy="55" r="2" fill="rgba(0,0,0,0.3)"/>
-          <circle cx="70" cy="50" r="2" fill="rgba(0,0,0,0.3)"/>
-        </svg>
-        <div class="gallery-thumb-label">Velvet</div>
+      <div class="gallery-thumb" data-pos="center 65%">
+        <img src="img/tefaf-main-lounge.jpg" alt="Lower detail" style="object-position:center 65%; transform:scale(1.4); transform-origin:center 65%;">
+        <div class="gallery-thumb-label">Material</div>
       </div>
-      <div class="gallery-thumb">
+      <div class="gallery-thumb" data-pos="right 40%">
+        <img src="img/tefaf-main-lounge.jpg" alt="Context view" style="object-position:right 40%;">
+        <div class="gallery-thumb-label">Context</div>
+      </div>
+      <div class="gallery-thumb" data-pos="sizes">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <rect width="100" height="100" fill="#ebe6dc"/>
-          <!-- Dimensions sketch -->
           <rect x="30" y="20" width="40" height="50" fill="none" stroke="#1a1815" stroke-width="1"/>
           <line x1="20" y1="20" x2="20" y2="70" stroke="#1a1815" stroke-width="0.5"/>
           <line x1="15" y1="20" x2="25" y2="20" stroke="#1a1815" stroke-width="0.5"/>
           <line x1="15" y1="70" x2="25" y2="70" stroke="#1a1815" stroke-width="0.5"/>
-          <text x="80" y="48" fill="#8b6f47" font-family="Cormorant Garamond" font-size="14" font-style="italic">82</text>
+          <text x="74" y="48" fill="#8b6f47" font-family="Georgia" font-size="11" font-style="italic">↕</text>
         </svg>
         <div class="gallery-thumb-label">Sizes</div>
       </div>
@@ -1523,30 +1508,19 @@ body::before {
       </div>
     </div>
 
-    <!-- DELIVERY PICKER -->
+    <!-- DELIVERY -->
     <div class="delivery-picker">
       <div class="delivery-title">Production &amp; delivery</div>
-      <div class="delivery-options">
-        <button class="delivery-opt" data-shipping="sea">
-          <div class="delivery-opt-name">Sea freight</div>
-          <div class="delivery-opt-time">9–12 weeks</div>
-          <div class="delivery-opt-extra">Included · White-glove</div>
-        </button>
-        <button class="delivery-opt active" data-shipping="air">
-          <div class="delivery-opt-name">Air freight</div>
-          <div class="delivery-opt-time">7 weeks</div>
-          <div class="delivery-opt-extra">+ € 480 · Priority</div>
-        </button>
-      </div>
-      <div class="delivery-eta">
-        <span>Estimated arrival</span>
-        <strong id="eta-date">Week of 7 July 2026</strong>
+      <div class="delivery-rows">
+        <div class="delivery-row"><span class="drow-label">Production</span><span class="drow-val">6 weeks ex works</span></div>
+        <div class="delivery-row"><span class="drow-label">Air freight</span><span class="drow-val">~1 week</span></div>
+        <div class="delivery-row"><span class="drow-label">Sea freight</span><span class="drow-val">Depending on destination</span></div>
       </div>
     </div>
 
     <!-- ACTIONS -->
     <div class="actions">
-      <button class="btn btn-reserve" type="button" data-open-inquiry>Réserver cette édition</button>
+      <button class="btn btn-reserve" type="button" data-open-inquiry>Acquire</button>
     </div>
 
     <div class="samples">
@@ -1902,26 +1876,6 @@ document.querySelectorAll('.config-swatches').forEach(group => {
   });
 });
 
-// Delivery picker
-document.querySelectorAll('.delivery-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    document.querySelectorAll('.delivery-opt').forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
-
-    const shipping = opt.dataset.shipping;
-    const today = new Date(2026, 4, 19); // 19 May 2026
-    let etaDate;
-
-    if (shipping === 'air') {
-      etaDate = new Date(today.getTime() + 7 * 7 * 24 * 60 * 60 * 1000);
-    } else {
-      etaDate = new Date(today.getTime() + 10 * 7 * 24 * 60 * 60 * 1000);
-    }
-
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const eta = document.getElementById('eta-date');
-    eta.textContent = `Week of ${etaDate.getDate()} ${months[etaDate.getMonth()]} ${etaDate.getFullYear()}`;
-  });
 });
 
 // Gallery context toggle (En situ / Isolé)
@@ -1942,12 +1896,22 @@ document.querySelectorAll('.delivery-opt').forEach(opt => {
   });
 })();
 
-// Gallery thumb selection
-document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-  thumb.addEventListener('click', () => {
-    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
+// Gallery thumb selection → update main image crop
+(function galleryThumbCrop() {
+  const mainImg = document.querySelector('.gallery-layer');
+  document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+      const pos = thumb.dataset.pos;
+      if (mainImg && pos && pos !== 'sizes') {
+        mainImg.style.objectPosition = pos;
+      } else if (mainImg && (!pos || pos === 'sizes')) {
+        mainImg.style.objectPosition = '';
+      }
+    });
   });
+})();
 });
 
 // Sync sticky mobile bar price with main info price
@@ -1973,7 +1937,7 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
   <a class="smb-wa" href="https://wa.me/85212345678?text=Hello%2C%20I%27m%20interested%20in%20the%20Lounge%20Chair%2001." target="_blank" rel="noopener" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.967-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.226 1.36.194 1.871.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.889-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.886 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
-  <button class="smb-reserve" type="button" data-open-inquiry>Réserver</button>
+  <button class="smb-reserve" type="button" data-open-inquiry>Acquire</button>
 </div>
 
 <!-- INQUIRY MODAL -->
@@ -1981,7 +1945,7 @@ document.querySelectorAll('.gallery-thumb').forEach(thumb => {
   <div class="inquiry-card">
     <button class="inquiry-close" type="button" data-close-inquiry aria-label="Close">×</button>
     <div class="inquiry-eyebrow">Édition Lounge Chair 01</div>
-    <h2 class="inquiry-title" id="inquiry-title">Réserver cette édition</h2>
+    <h2 class="inquiry-title" id="inquiry-title">Acquire this edition</h2>
     <p class="inquiry-lede">Pieces are made to order in our Pearl River Delta atelier. Tell us about your project — we reply within one business day.</p>
     <form class="inquiry-form" id="inquiry-form" novalidate>
       <div class="inquiry-field">
